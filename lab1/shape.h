@@ -30,37 +30,24 @@ public:
 
 class rectangle :public shape{
 private:
-
+	point p1,p2;
 public:
 	rectangle();
-	rectangle(point, double, Color, bool);
-	double getx();
-	double gety();
-	Color getcolor();
-	Color getfcolor();
-	bool is_fill();
+	rectangle(point, point, Color, bool);
 };
 
-class line {
+class line:public shape {
 private:
-
+	point p1, p2;
 public:
 	line();
-	line(point, point, Color);
-	double getx();
-	double gety();
-	Color getcolor();
+	line(point, point,Color,bool);
 };
 
 class triangle:public shape {
 private:
-
+	point p1, p2, p3;
 public:
 	triangle();
-	triangle(point, double, Color, bool);
-	double getx();
-	double gety();
-	Color getcolor();
-	Color getfcolor();
-	bool is_fill();
+	triangle(point, point,point,Color,bool);
 };

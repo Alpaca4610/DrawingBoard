@@ -26,7 +26,7 @@ Color shape::getfcolor()
 
 bool shape::isfilled()
 {
-	return isfilled;
+	return filled;
 }
 
 void shape::setColor(Color color_)
@@ -55,4 +55,29 @@ double circle::getx()
 double circle::gety()
 {
 	return p.gety();
+}
+
+rectangle::rectangle():rectangle(point(100,100),point(200,200),Color::Default,false){}
+
+rectangle::rectangle(point p1_, point p2_, Color c_, bool filled_):shape{c_,filled_}
+{
+	p1 = p1_;
+	p2 = p2_;
+}
+
+triangle::triangle():triangle(point(100,100),point(200,200),point(300,300),Color::Default,false){}
+
+triangle::triangle(point p1_, point p2_, point p3_,Color c_,bool filled_):shape(c_,filled_)
+{
+	p1 = p1_;
+	p2 = p2_;
+	p3 = p3_;
+}
+
+line::line():line(point(100,100),point(200,200),Color::Default,false){}
+
+line::line(point p1_, point p2_,Color c_,bool filled_):shape(c_,filled_)
+{
+	p1 = p1_;
+	p2 = p2_;
 }

@@ -15,16 +15,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="default.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Coordinate.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="color.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="default.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="shape.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Coordinate.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,13 +32,13 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="shape.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="default.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Coordinate.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="shape.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
