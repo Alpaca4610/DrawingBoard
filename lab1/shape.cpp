@@ -2,36 +2,31 @@
 #include <iostream>
 #include <string>
 
-shape::shape(Color color_, bool filled_)
+void shape::convertBool(string filled_)
 {
-	color = color_;
-	filled = filled_;
-/*	if (filled) {
-		std::cout << "请输入需要填充的颜色！" << std::endl;
-		std::string s;
-	//	std::cin >> s;
-//		static_cast<Color>(s) >> fcolor;
-	}*/
+	if ('Y' == filled_[0]) {
+		filled = true;
+	}	
+	else if ('N' == filled_[0]) {
+		filled = false;
+	}
 }
 
-Color shape::getColor()
+shape::shape(string color_, string filled_)
 {
-	return color;
+	color = Color(color_);
+	convertBool(filled_);
+	char fc[2];
+	if (filled) {
+		inputbox_getline("请输入需要填充图形的颜色", "请输入需要填充图形的颜色（R代表红色，G代表绿色，B代表蓝色）：（回车确认）", fc, 2);
+		fcolor = Color{ fc };
+	}
 }
 
-Color shape::getfcolor()
-{
-	return fcolor;
-}
 
 bool shape::isfilled()
 {
 	return filled;
-}
-
-void shape::setColor(Color color_)
-{
-	color = color_;
 }
 
 void shape::setfilled(bool filled_)
@@ -39,45 +34,95 @@ void shape::setfilled(bool filled_)
 	filled = filled_;
 }
 
-circle::circle():circle(point(),5.0,Color::W,false){}
+Color shape::getcolor()
+{
+	return color;
+}
 
-circle::circle(point p_, double r_, Color c_, bool filled_):shape { c_, filled_ }
+Color shape::getbgcolor()
+{
+	return fcolor;
+}
+
+Circle::Circle():Circle(point("100,100"),5.0,"W","N"){}
+
+Circle::Circle(point p_, double r_, string s_, string filled_):shape { s_, filled_ }
 {
 	p = p_;
 	radius = r_;
 }
 
-double circle::getx()
+double Circle::getx()
 {
 	return p.getx();
 }
 
-double circle::gety()
+double Circle::gety()
 {
 	return p.gety();
 }
 
-rectangle::rectangle():rectangle(point(100,100),point(200,200),Color::Default,false){}
+RectangleC::RectangleC():RectangleC(point("100,100"),point("200,200"),"W", "N"){}
 
-rectangle::rectangle(point p1_, point p2_, Color c_, bool filled_):shape{c_,filled_}
+RectangleC::RectangleC(point p1_, point p2_, string s_, string filled_):shape{s_,filled_}
 {
 	p1 = p1_;
 	p2 = p2_;
 }
 
-triangle::triangle():triangle(point(100,100),point(200,200),point(300,300),Color::Default,false){}
+point RectangleC::getp1()
+{
+	return p1;
+}
 
-triangle::triangle(point p1_, point p2_, point p3_,Color c_,bool filled_):shape(c_,filled_)
+point RectangleC::getp2()
+{
+	return p2;
+}
+
+triangle::triangle():triangle(point("100,100"),point("200,200"),point("300,300"),"W", "N"){}
+
+triangle::triangle(point p1_, point p2_, point p3_,string c_,string filled_):shape(c_,filled_)
 {
 	p1 = p1_;
 	p2 = p2_;
 	p3 = p3_;
 }
 
-line::line():line(point(100,100),point(200,200),Color::Default,false){}
+point triangle::getp1()
+{
+	return p1;
+}
 
-line::line(point p1_, point p2_,Color c_,bool filled_):shape(c_,filled_)
+point triangle::getp2()
+{
+	return p2;
+}
+
+point triangle::getp3()
+{
+	return p3;
+}
+
+Line::Line():Line(point("100,100"),point("200,200"),"W"){}
+
+Line::Line(point p1_, point p2_,string c_)
 {
 	p1 = p1_;
 	p2 = p2_;
+	color = Color(c_);
+}
+
+Color Line::getcolor()
+{
+	return color;
+}
+
+point Line::getp1()
+{
+	return p1;
+}
+point Line::getp2()
+{
+	return p2;
 }

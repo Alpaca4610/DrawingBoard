@@ -1,47 +1,54 @@
 #pragma once
 #include "Coordinate.h"
 #include "color.h"
+using std::string;
 
 class shape {
 private:
-	Color color{ Color::W };
-	Color fcolor{ Color::Default };
+	Color color{};
+	Color fcolor{};
 	bool filled{ false };
 public:
+	void convertBool(string);
 	shape() = default;
-	shape(Color, bool);
-	Color getColor();
-	Color getfcolor();
+	shape(string, string);
 	bool isfilled();
-	void setColor(Color);
 	void setfilled(bool);
+	Color getcolor();
+	Color getbgcolor();
 };
 
-class circle :public shape{
+class Circle :public shape{
 private:
 	point p;
 	double radius;
 public:
-	circle();
-	circle(point, double, Color, bool);
+	Circle();
+	Circle(point, double, string, string);
 	double getx();
 	double gety();
 };
 
-class rectangle :public shape{
+class RectangleC :public shape{
 private:
 	point p1,p2;
 public:
-	rectangle();
-	rectangle(point, point, Color, bool);
+	RectangleC();
+	RectangleC(point, point, string, string);
+	point getp1();
+	point getp2();
 };
 
-class line:public shape {
+class Line {
 private:
 	point p1, p2;
+	Color color;
 public:
-	line();
-	line(point, point,Color,bool);
+	Line();
+	Line(point, point,string);
+	Color getcolor();
+	point getp1();
+	point getp2();
 };
 
 class triangle:public shape {
@@ -49,5 +56,8 @@ private:
 	point p1, p2, p3;
 public:
 	triangle();
-	triangle(point, point,point,Color,bool);
+	triangle(point, point,point,string,string);
+	point getp1();
+	point getp2();
+	point getp3();
 };
