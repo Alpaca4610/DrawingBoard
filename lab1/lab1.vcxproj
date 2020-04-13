@@ -149,15 +149,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Coordinate.cpp" />
-    <ClCompile Include="default.cpp" />
+    <ClCompile Include="controller.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shape.cpp" />
-    <ClCompile Include="源.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="color.h" />
     <ClInclude Include="Coordinate.h" />
-    <ClInclude Include="default.h" />
+    <ClInclude Include="controller.h" />
     <ClInclude Include="shape.h" />
   </ItemGroup>
   <ItemGroup>

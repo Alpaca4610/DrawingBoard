@@ -18,13 +18,13 @@
     <ClInclude Include="color.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="default.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="shape.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Coordinate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="controller.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,13 +35,10 @@
     <ClCompile Include="shape.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="default.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Coordinate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="源.cpp">
+    <ClCompile Include="controller.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
