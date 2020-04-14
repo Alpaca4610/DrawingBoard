@@ -14,13 +14,14 @@ int main()
     int k = 0;
     for (; k != key_esc; ) // key_esc是ege定义的按键常数
     {
-        outtextxy(100, 0, "欢迎使用NMSL Drawing Board Ver1.1！");
+        outtextxy(100, 0, "欢迎使用NMSL Drawing Board Ver1.2！");
         outtextxy(170, 25, "1.创建一个圆对象");
         outtextxy(170, 50, "2.创建一个矩形对象");
         outtextxy(170, 75, "3.创建一个三角形对象");
         outtextxy(170, 100, "4.创建一条线对象");
-        outtextxy(170, 125, "5.初始化画板大小");
-        outtextxy(170, 150, "6.退出");
+        outtextxy(170, 125, "5.创建一个多边形对象");
+        outtextxy(170, 150, "6.初始化画板大小");
+        outtextxy(170, 175, "7.退出");
         k = getch();
         switch (k) {
         case 49: {
@@ -76,7 +77,7 @@ int main()
             int pt[] = {t1.getp1().getx(),t1.getp1().gety(), t1.getp2().getx(), t1.getp2().gety(), t1.getp3().getx(), t1.getp3().gety() };
             setcolor(t1.getcolor().getcolor());        
            if (t1.isfilled()) {
-                setfillstyle(SOLID_FILL, BLUE);
+                setfillstyle(SOLID_FILL, t1.getbgcolor().getcolor());
             }
             fillpoly(3, pt);
             getch();
@@ -99,12 +100,29 @@ int main()
             break;
         }
         case 53: {
+            cleardevice();
+            char color_[2], fcolor_[2], filled_[2],ns[2],size[15];
+            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：（例：（640，480））：（回车确认）", size, 15);
+            inputbox_getline("请输入多边形的边数", "请输入多边形的边数", ns, 2);
+            inputbox_getline("请输入边框的颜色", "请输入边框的颜色(R代表红色，G代表绿色，B代表蓝色))（回车确认）", color_, 2);
+            inputbox_getline("该多边形是否填充？：", "该多边形是否填充？（填充请输入Y，不填充请输入N）", filled_, 2);
+            ploygon pg1(ns, color_, filled_);
+            controller screen1(size);
+            setfillcolor(pg1.getcolor().getcolor());
+            if (pg1.isfilled()) {
+                setfillstyle(SOLID_FILL, pg1.getcolor().getcolor());
+            }
+            fillpoly(pg1.getn(), pg1.getp());
+            getch();
+            break;
+        }        
+        case 54: {
             initgraph(640, 480);
             setcolor(LIGHTGRAY);
             outtextxy(320, 240, "初始化完成！");
             break;
         }
-        case 54:
+        case 55:
             exit(0);
             break;
 

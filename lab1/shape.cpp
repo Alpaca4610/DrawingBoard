@@ -1,5 +1,6 @@
 #include "shape.h"
-#include <iostream>
+#include <graphics.h>
+#include "ege.h"
 #include <string>
 
 void shape::convertBool(string filled_)
@@ -126,3 +127,33 @@ point Line::getp2()
 {
 	return p2;
 }
+
+ploygon::ploygon(string n_,string color_,string filled_):shape(color_,filled_)
+{
+	n = std::stoi(n_);
+	if (n <= 2) {
+		outtext("请输入正确的顶点个数！（n >= 3）");
+	}
+	for (int i = 0; i < n; i++) {
+		char p_temp[15];
+		inputbox_getline("请输入顶点坐标", "请输入顶点坐标(如(233,233))（回车确认）",p_temp ,15);
+		point p_{ p_temp };
+		p.push_back(p_.getx());
+		p.push_back(p_.gety());
+	}
+}
+
+ploygon::ploygon():ploygon("3","R","N"){}
+
+int ploygon::getn()
+{
+	return n;
+}
+
+int* ploygon::getp()//将vector转换成整数数组并返回
+{
+	int* po = new int(p.size());
+	std::copy(p.begin(), p.end(), po);
+	return po;
+}
+

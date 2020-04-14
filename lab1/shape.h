@@ -1,6 +1,7 @@
 #pragma once
 #include "Coordinate.h"
 #include "color.h"
+#include <vector>
 using std::string;
 
 class shape {
@@ -60,4 +61,15 @@ public:
 	point getp1();
 	point getp2();
 	point getp3();
+};
+
+class ploygon :public shape{
+private:
+	std::vector<int> p;
+	int n;
+public:
+	ploygon();
+	ploygon(string,string,string);
+	int getn();
+	int* getp();
 };
