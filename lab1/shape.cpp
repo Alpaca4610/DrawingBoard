@@ -3,7 +3,7 @@
 #include "ege.h"
 #include <string>
 
-void shape::convertBool(string filled_)
+void shape::convertBool(string filled_)//将字符串转换为bool类型的变量
 {
 	if ('Y' == filled_[0]) {
 		filled = true;
@@ -13,57 +13,57 @@ void shape::convertBool(string filled_)
 	}
 }
 
-shape::shape(string color_, string filled_)
+shape::shape(string color_, string filled_)//将字符串转换成color_t类型的变量
 {
 	color = Color(color_);
 	convertBool(filled_);
 	char fc[2];
-	if (filled) {
+	if (filled) {//判断如果填充，则要求用户输入填充图形的颜色
 		inputbox_getline("请输入需要填充图形的颜色", "请输入需要填充图形的颜色（R代表红色，G代表绿色，B代表蓝色）：（回车确认）", fc, 2);
 		fcolor = Color{ fc };
 	}
 }
 
 
-bool shape::isfilled()
+bool shape::isfilled()//getter
 {
 	return filled;
 }
 
-void shape::setfilled(bool filled_)
+void shape::setfilled(bool filled_)//setter
 {
 	filled = filled_;
 }
 
-Color shape::getcolor()
+Color shape::getcolor()//getter
 {
 	return color;
 }
 
-Color shape::getbgcolor()
+Color shape::getbgcolor()//getter
 {
 	return fcolor;
 }
 
-Circle::Circle():Circle(point("100,100"),5.0,"W","N"){}
+Circle::Circle():Circle(point("100,100"),5.0,"W","N"){}//default ctor
 
-Circle::Circle(point p_, double r_, string s_, string filled_):shape { s_, filled_ }
+Circle::Circle(point p_, double r_, string s_, string filled_):shape { s_, filled_ }//利用接收的字符串构造类
 {
 	p = p_;
 	radius = r_;
 }
 
-double Circle::getx()
+double Circle::getx()//getter
 {
 	return p.getx();
 }
 
-double Circle::gety()
+double Circle::gety()//getter
 {
 	return p.gety();
 }
 
-RectangleC::RectangleC():RectangleC(point("100,100"),point("200,200"),"W", "N"){}
+RectangleC::RectangleC():RectangleC(point("100,100"),point("200,200"),"W", "N"){}//default ctor
 
 RectangleC::RectangleC(point p1_, point p2_, string s_, string filled_):shape{s_,filled_}
 {
@@ -71,12 +71,12 @@ RectangleC::RectangleC(point p1_, point p2_, string s_, string filled_):shape{s_
 	p2 = p2_;
 }
 
-point RectangleC::getp1()
+point RectangleC::getp1()//getter
 {
 	return p1;
 }
 
-point RectangleC::getp2()
+point RectangleC::getp2()//getter
 {
 	return p2;
 }
@@ -131,10 +131,10 @@ point Line::getp2()
 ploygon::ploygon(string n_,string color_,string filled_):shape(color_,filled_)
 {
 	n = std::stoi(n_);
-	if (n <= 2) {
+	if (n <= 2) {//判断用户输入的数据是否合法
 		outtext("请输入正确的顶点个数！（n >= 3）");
 	}
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n; i++) {//根据用户输入的顶点数创建vector存储顶点坐标
 		char p_temp[15];
 		inputbox_getline("请输入顶点坐标", "请输入顶点坐标(如(233,233))（回车确认）",p_temp ,15);
 		point p_{ p_temp };

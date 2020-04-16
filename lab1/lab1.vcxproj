@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="color.cpp" />
     <ClCompile Include="Coordinate.cpp" />
     <ClCompile Include="controller.cpp" />
     <ClCompile Include="main.cpp" />

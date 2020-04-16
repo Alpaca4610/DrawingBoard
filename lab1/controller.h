@@ -7,8 +7,10 @@
 class controller {
 private:
 	point p1;
+	PIMAGE pimg;
 public:
 	controller();
 	controller(std::string);
+	point getpoint();
 	void close();
 };

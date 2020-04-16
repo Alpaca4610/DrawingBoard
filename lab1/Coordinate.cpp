@@ -2,7 +2,7 @@
 
 point::point() :point("(300,300)") {}
 
-point::point(std::string s_)
+point::point(std::string s_)//将字符串形式的坐标转换成两个int类型并存储在成员变量中
 {
 	s = s_;
 	int n = s.find_first_of(",");
@@ -11,18 +11,18 @@ point::point(std::string s_)
 	y = std::stod(s.substr(n + 1, n2 -  n- 1));
 }
 
-double point::getx()
+double point::getx()//getter
 {
 	return x;
 }
 
-void point::setpoint(double x_, double y_)
+void point::setpoint(double x_, double y_)//setter
 {
 	x = x_;
 	y = y_;
 }
 
-double point::gety()
+double point::gety()//getter
 {
 	return y;
 }
