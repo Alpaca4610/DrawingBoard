@@ -67,9 +67,11 @@ class ploygon :public shape{
 private:
 	std::vector<int> p;
 	int n;
+	int* po;
 public:
 	ploygon();
 	ploygon(string,string,string);
 	int getn();
 	int* getp();
+	void deletep();
 };

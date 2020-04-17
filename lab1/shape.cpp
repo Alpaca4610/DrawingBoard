@@ -131,9 +131,6 @@ point Line::getp2()
 ploygon::ploygon(string n_,string color_,string filled_):shape(color_,filled_)
 {
 	n = std::stoi(n_);
-	if (n <= 2) {//判断用户输入的数据是否合法
-		outtext("请输入正确的顶点个数！（n >= 3）");
-	}
 	for (int i = 0; i < n; i++) {//根据用户输入的顶点数创建vector存储顶点坐标
 		char p_temp[15];
 		inputbox_getline("请输入顶点坐标", "请输入顶点坐标(如(233,233))（回车确认）",p_temp ,15);
@@ -152,8 +149,12 @@ int ploygon::getn()
 
 int* ploygon::getp()//将vector转换成整数数组并返回
 {
-	int* po = new int(p.size());
+	po = new int(sizeof(int)*(p.size()+1));//注意sizeof！！！！！！！
 	std::copy(p.begin(), p.end(), po);
 	return po;
 }
 
+void ploygon::deletep() {
+	delete []po;
+	po = nullptr;
+}

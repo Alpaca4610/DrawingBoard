@@ -30,11 +30,11 @@ int main()
         case 49: {
             cleardevice(); //清空之前输出的菜单信息，便于接下来的绘图
             char str[15], r[15], c[3], filled[2],size[15];//创建用于接收inputbox的字符串
-            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：（例：（640，480））：（回车确认）", size, 15);
-            inputbox_getline("请输入圆心的坐标：", "请输入圆心的坐标（例：（233，233））：（回车确认）", str, 15);
-            inputbox_getline("请输入圆的半径：", "请输入圆心的半径：（回车确认）", r, 10);
-            inputbox_getline("请输入圆的颜色：", "请输入圆的颜色（R代表红色，G代表绿色，B代表蓝色））：（回车确认）", c, 3);
-            inputbox_getline("该圆是否填充？：", "该圆是否填充？（填充请输入Y，不填充请输入N）：（回车确认）", filled, 2);
+            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：(例：(640，480))：(回车确认)", size, 15);
+            inputbox_getline("请输入圆心的坐标：", "请输入圆心的坐标(例：(233，233)，符号为英文！)：(回车确认)", str, 15);
+            inputbox_getline("请输入圆的半径：", "请输入圆心的半径：(回车确认)", r, 10);
+            inputbox_getline("请输入圆的颜色：", "请输入圆的颜色(R代表红色，G代表绿色，B代表蓝色))：(回车确认)", c, 3);
+            inputbox_getline("该圆是否填充？：", "该圆是否填充？(填充请输入Y，不填充请输入N)：(回车确认)", filled, 2);
             controller screen1(size);//创建画板屏幕对象让用户自定义大小
             Circle c1{ point{str},std::stod(r),c, filled };//利用接收的数据创建圆对象
             setcolor(c1.getcolor().getcolor());//设置圆边界的颜色
@@ -49,11 +49,11 @@ int main()
         case 50: {
             cleardevice();
             char p1[15],p2[15], c[3], filled[2], size[15];
-            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：（例：（640，480））：（回车确认）", size, 15);
-            inputbox_getline("请输入矩形左上角顶点的坐标：", "请输入矩形左上角顶点的坐标（例：（233，233））：（回车确认）", p1, 15);
-            inputbox_getline("请输入矩形右上角顶点的坐标：", "请输入矩形右下角顶点的坐标（例：（333，133））：（回车确认）", p2, 15);
-            inputbox_getline("请输入矩形的颜色：", "请输入矩形的颜色（R代表红色，G代表绿色，B代表蓝色））：（回车确认）", c, 3);
-            inputbox_getline("该矩形是否填充？：", "该矩形是否填充？（填充请输入Y，不填充请输入N）：（回车确认）", filled, 2);
+            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：(例：(640，480)符号为英文！)：(回车确认)", size, 15);
+            inputbox_getline("请输入矩形左上角顶点的坐标：", "请输入矩形左上角顶点的坐标(例：(233，233)符号为英文！)：(回车确认)", p1, 15);
+            inputbox_getline("请输入矩形右上角顶点的坐标：", "请输入矩形右下角顶点的坐标(例：(333，133)符号为英文！)：(回车确认)", p2, 15);
+            inputbox_getline("请输入矩形的颜色：", "请输入矩形的颜色(R代表红色，G代表绿色，B代表蓝色))：(回车确认)", c, 3);
+            inputbox_getline("该矩形是否填充？：", "该矩形是否填充？(填充请输入Y，不填充请输入N)：(回车确认)", filled, 2);
             controller screen1(size);
             RectangleC g1{point(p1),point(p2),c,filled};//利用point类创建矩形对象
             setcolor(g1.getcolor().getcolor());
@@ -69,12 +69,12 @@ int main()
         case 51: {
             cleardevice();
             char p1[15],p2[15], p3[15],c[3], filled[2],size[15];
-            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：（例：（640，480））：（回车确认）", size, 15);
-            inputbox_getline("请输入三角形第一个顶点的坐标：", "请输入三角形第一个顶点的坐标（例：（233，233））：（回车确认）", p1, 15);
-            inputbox_getline("请输入三角形第二个顶点的坐标：", "请输入三角形第二个顶点的坐标（例：（333，400））：（回车确认）", p2, 15);
-            inputbox_getline("请输入三角形第三个顶点的坐标：", "请输入三角形第三个顶点的坐标（例：（300，300））：（回车确认）", p3, 15);
-            inputbox_getline("请输入三角形的颜色：", "请输入三角形的颜色（R代表红色，G代表绿色，B代表蓝色））：（回车确认）", c, 3);
-            inputbox_getline("该三角形是否填充？：", "该三角形是否填充？（填充请输入Y，不填充请输入N）：（回车确认）", filled, 2);
+            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：(例：(640，480))符号为英文！：(回车确认)", size, 15);
+            inputbox_getline("请输入三角形第一个顶点的坐标：", "请输入三角形第一个顶点的坐标(例：(233，233))符号为英文！：(回车确认)", p1, 15);
+            inputbox_getline("请输入三角形第二个顶点的坐标：", "请输入三角形第二个顶点的坐标(例：(333，400))符号为英文！：(回车确认)", p2, 15);
+            inputbox_getline("请输入三角形第三个顶点的坐标：", "请输入三角形第三个顶点的坐标(例：(300，300))符号为英文！：(回车确认)", p3, 15);
+            inputbox_getline("请输入三角形的颜色：", "请输入三角形的颜色(R代表红色，G代表绿色，B代表蓝色))：(回车确认)", c, 3);
+            inputbox_getline("该三角形是否填充？：", "该三角形是否填充？(填充请输入Y，不填充请输入N)：(回车确认)", filled, 2);
             controller screen1(size);
             triangle t1{point(p1),point(p2),point(p3),c,filled};//创建一个三角形对象
             int pt[] = {t1.getp1().getx(),t1.getp1().gety(), t1.getp2().getx(), t1.getp2().gety(), t1.getp3().getx(), t1.getp3().gety() };//利用接收到的点坐标数据创建一个数组
@@ -90,10 +90,10 @@ int main()
         case 52: {
             cleardevice();
             char p1[15], p2[15], c[3],size[15];
-            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：（例：（640，480））：（回车确认）", size, 15);
-            inputbox_getline("请输入线段第一个顶点的坐标：", "请输入线段第一个顶点的坐标（例：（233，233））：（回车确认）", p1, 15);
-            inputbox_getline("请输入线段第二个顶点的坐标：", "请输入线段第二个顶点的坐标（例：（433，433））：（回车确认）", p2, 15);
-            inputbox_getline("请输入线段的颜色：", "请输入线段的颜色（R代表红色，G代表绿色，B代表蓝色））：（回车确认）", c, 3);
+            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：(例：(640，480)符号为英文！)：(回车确认)", size, 15);
+            inputbox_getline("请输入线段第一个顶点的坐标：", "请输入线段第一个顶点的坐标(例：(233，233)符号为英文！)：(回车确认)", p1, 15);
+            inputbox_getline("请输入线段第二个顶点的坐标：", "请输入线段第二个顶点的坐标(例：(433，433)符号为英文！)：(回车确认)", p2, 15);
+            inputbox_getline("请输入线段的颜色：", "请输入线段的颜色(R代表红色，G代表绿色，B代表蓝色))：(回车确认)", c, 3);
             controller screen1(size);
             Line l1(point(p1), point(p2), c);//创建线对象
             setcolor(l1.getcolor().getcolor());
@@ -105,10 +105,16 @@ int main()
         case 53: {
             cleardevice();
             char color_[2], fcolor_[2], filled_[2],ns[2],size[15];
-            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：（例：（640，480））：（回车确认）", size, 15);
+            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：(例：(640，480)符号为英文！)：(回车确认)", size, 15);
             inputbox_getline("请输入多边形的边数", "请输入多边形的边数", ns, 2);
-            inputbox_getline("请输入边框的颜色", "请输入边框的颜色(R代表红色，G代表绿色，B代表蓝色))（回车确认）", color_, 2);
-            inputbox_getline("该多边形是否填充？：", "该多边形是否填充？（填充请输入Y，不填充请输入N）", filled_, 2);
+            if (std::stoi(ns) <= 2) {//判断用户输入的数据是否合法
+                outtext("请输入正确的顶点个数！（n >= 3）");
+                getch();
+                cleardevice();
+                break;
+            }
+            inputbox_getline("请输入边框的颜色", "请输入边框的颜色(R代表红色，G代表绿色，B代表蓝色))(回车确认)", color_, 2);
+            inputbox_getline("该多边形是否填充？：", "该多边形是否填充？(填充请输入Y，不填充请输入N)", filled_, 2);
             ploygon pg1(ns, color_, filled_);//创建多边形对象
             controller screen1(size);
             setfillcolor(pg1.getcolor().getcolor());
@@ -116,22 +122,22 @@ int main()
                 setfillstyle(SOLID_FILL, pg1.getcolor().getcolor());
             }
             fillpoly(pg1.getn(), pg1.getp());
-            delete pg1.getp();
             getch();
+            cleardevice();
             break;
         }        
         case 54: {
             cleardevice();
             char size[15],col[3];
             int x, y;
-            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：（例：（640，480））：（回车确认）", size, 15);
+            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：(例：(640，480))：(回车确认)", size, 15);
             controller screen1(size);
-            inputbox_getline("请输入绘图的颜色：", "请输入绘图的颜色（R代表红色，G代表绿色，B代表蓝色，W代表白色））：（回车确认）", col, 3);
+            inputbox_getline("请输入绘图的颜色：", "请输入绘图的颜色(R代表红色，G代表绿色，B代表蓝色，W代表白色))：(回车确认)", col, 3);
             inputbox_getline("按下回车键开始绘图，若要结束绘图，再按任意键", "按下回车键开始绘图，若要结束绘图，再按任意键", size, 3);//给用户缓冲时间
             Color c(col);
             for (; !kbmsg(); delay_fps(300)) {
                 mousepos(&x,&y);//获取当前鼠标位置
-                putpixel(x, y, c.getcolor());
+                putpixel(x, y, c.getcolor());//在鼠标当前位置打点
             }
             cleardevice();
             break;
@@ -140,7 +146,7 @@ int main()
             cleardevice();
             int x{ 0 }, y{0};
             char size[15];
-            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：（例：（640，480））：（回车确认）", size, 15);
+            inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：(例：(640，480))：(回车确认)", size, 15);
             controller screen1(size);
             randomize();
             inputbox_getline("按下回车键开始绘图，若要结束绘图，再按任意键", "按下回车键开始绘图，若要结束绘图，再按任意键", size, 3);//给用户缓冲时间

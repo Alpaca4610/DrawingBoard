@@ -24,5 +24,3 @@ void Color::setColor(std::string s) {//setter
 		break;
 	}
 }
-
-
