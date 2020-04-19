@@ -12,10 +12,10 @@ int main()
     setcaption("Alpaca Drawing Board");
     initgraph(640, 480);
     setfont(18, 0, "宋体"); //设置字体
-    int k = 0;
+    int k{0};
     for (; k != key_esc; ) // key_esc是ege定义的按键常数
     {
-        outtextxy(100, 0, "欢迎使用Alpaca Drawing Board Ver2.0！");
+        outtextxy(100, 0, "欢迎使用Alpaca Drawing Board Ver2.1！");
         outtextxy(170, 25, "1.创建一个圆对象");
         outtextxy(170, 50, "2.创建一个矩形对象");
         outtextxy(170, 75, "3.创建一个三角形对象");
@@ -35,10 +35,10 @@ int main()
             inputbox_getline("请输入圆的半径：", "请输入圆心的半径：(回车确认)", r, 10);
             inputbox_getline("请输入圆的颜色：", "请输入圆的颜色(R代表红色，G代表绿色，B代表蓝色))：(回车确认)", c, 3);
             inputbox_getline("该圆是否填充？：", "该圆是否填充？(填充请输入Y，不填充请输入N)：(回车确认)", filled, 2);
+            Circle c1{ point{str},std::stoi(r),c, filled };//利用接收的数据创建圆对象
             controller screen1(size);//创建画板屏幕对象让用户自定义大小
-            Circle c1{ point{str},std::stod(r),c, filled };//利用接收的数据创建圆对象
             setcolor(c1.getcolor().getcolor());//设置圆边界的颜色
-            circle(static_cast<int>(c1.getx()), static_cast<int>(c1.gety()), std::stod(r));//画圆函数
+            circle(static_cast<int>(c1.getx()), c1.gety(), std::stoi(r));//画圆函数
             if (c1.isfilled()) {
                 setfillcolor(c1.getbgcolor().getcolor());
                 floodfill(c1.getx(), c1.gety(), c1.getcolor().getcolor());
@@ -75,8 +75,8 @@ int main()
             inputbox_getline("请输入三角形第三个顶点的坐标：", "请输入三角形第三个顶点的坐标(例：(300，300))符号为英文！：(回车确认)", p3, 15);
             inputbox_getline("请输入三角形的颜色：", "请输入三角形的颜色(R代表红色，G代表绿色，B代表蓝色))：(回车确认)", c, 3);
             inputbox_getline("该三角形是否填充？：", "该三角形是否填充？(填充请输入Y，不填充请输入N)：(回车确认)", filled, 2);
-            controller screen1(size);
             triangle t1{point(p1),point(p2),point(p3),c,filled};//创建一个三角形对象
+            controller screen1(size);
             int pt[] = {t1.getp1().getx(),t1.getp1().gety(), t1.getp2().getx(), t1.getp2().gety(), t1.getp3().getx(), t1.getp3().gety() };//利用接收到的点坐标数据创建一个数组
             setcolor(t1.getcolor().getcolor());        
            if (t1.isfilled()) {
@@ -104,7 +104,7 @@ int main()
         }
         case 53: {
             cleardevice();
-            char color_[2], fcolor_[2], filled_[2],ns[2],size[15];
+            char color_[2], filled_[2],ns[2],size[15];
             inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：(例：(640，480)符号为英文！)：(回车确认)", size, 15);
             inputbox_getline("请输入多边形的边数", "请输入多边形的边数", ns, 2);
             if (std::stoi(ns) <= 2) {//判断用户输入的数据是否合法
@@ -123,6 +123,7 @@ int main()
             }
             fillpoly(pg1.getn(), pg1.getp());
             getch();
+            delete[]pg1.getp();
             cleardevice();
             break;
         }        

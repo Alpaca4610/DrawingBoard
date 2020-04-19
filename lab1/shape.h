@@ -25,9 +25,9 @@ private:
 	double radius;
 public:
 	Circle();
-	Circle(point, double, string, string);
-	double getx();
-	double gety();
+	Circle(point, int, string, string);
+	int getx();
+	int gety();
 };
 
 class RectangleC :public shape{
@@ -67,11 +67,9 @@ class ploygon :public shape{
 private:
 	std::vector<int> p;
 	int n;
-	int* po;
 public:
 	ploygon();
 	ploygon(string,string,string);
 	int getn();
 	int* getp();
-	void deletep();
 };

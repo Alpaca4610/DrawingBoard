@@ -47,18 +47,18 @@ Color shape::getbgcolor()//getter
 
 Circle::Circle():Circle(point("100,100"),5.0,"W","N"){}//default ctor
 
-Circle::Circle(point p_, double r_, string s_, string filled_):shape { s_, filled_ }//利用接收的字符串构造类
+Circle::Circle(point p_, int r_, string s_, string filled_):shape { s_, filled_ }//利用接收的字符串构造类
 {
 	p = p_;
 	radius = r_;
 }
 
-double Circle::getx()//getter
+int Circle::getx()//getter
 {
 	return p.getx();
 }
 
-double Circle::gety()//getter
+int Circle::gety()//getter
 {
 	return p.gety();
 }
@@ -149,12 +149,8 @@ int ploygon::getn()
 
 int* ploygon::getp()//将vector转换成整数数组并返回
 {
-	po = new int(sizeof(int)*(p.size()+1));//注意sizeof！！！！！！！
+	int* po = new int[p.size()];//注意sizeof！！！！！！！
 	std::copy(p.begin(), p.end(), po);
 	return po;
 }
 
-void ploygon::deletep() {
-	delete []po;
-	po = nullptr;
-}

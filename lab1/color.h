@@ -4,7 +4,8 @@
 #include <string>
 
 class Color
-{private:
+{
+private:
 	color_t color{ LIGHTGRAY };
 public:
 	Color();

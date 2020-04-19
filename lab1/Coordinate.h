@@ -3,12 +3,12 @@
 
 class point {
 private:
-	std::string s;
-	double x, y;
+	int x, y;
 public:
 	point();
 	point(std::string);
-	double getx();
-	void setpoint(double, double);
-	double gety();
+	void convert(std::string);
+	int getx();
+	int gety();
+	void setpoint(std::string);
 };
