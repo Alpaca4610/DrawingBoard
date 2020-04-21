@@ -6,61 +6,75 @@ using std::string;
 
 class shape {
 private:
-	Color color{};
-	Color fcolor{};
+	Color* color{};
+	Color* fcolor{};
 	bool filled{ false };
+	string size;
 public:
 	void convertBool(string);
 	shape() = default;
-	shape(string, string);
+	shape(string, string,string);
 	bool isfilled();
 	void setfilled(bool);
-	Color getcolor();
-	Color getbgcolor();
+	Color* getcolor();
+	Color* getbgcolor();
+	virtual void draw() = 0;
+	string getsize();
+	string* getAOfsize();
+	~shape();
 };
 
 class Circle :public shape{
 private:
 	point p;
-	double radius;
+	int radius;
 public:
-	Circle();
-	Circle(point, int, string, string);
+	Circle(Circle&);
+	Circle(point, int, string, string,string);
 	int getx();
 	int gety();
+	virtual void draw() override;
+	~Circle();
 };
 
 class RectangleC :public shape{
 private:
 	point p1,p2;
 public:
-	RectangleC();
-	RectangleC(point, point, string, string);
+	RectangleC(RectangleC&);
+	RectangleC(point, point, string, string,string);
 	point getp1();
 	point getp2();
+	virtual void draw() override;
+	~RectangleC();
 };
 
 class Line {
 private:
 	point p1, p2;
-	Color color;
+	Color* color;
+	string size;
 public:
-	Line();
-	Line(point, point,string);
-	Color getcolor();
+	Line(Line&);
+	Line(point, point,string,string);
+	Color* getcolor();
 	point getp1();
 	point getp2();
+	void draw();
+	~Line();
 };
 
 class triangle:public shape {
 private:
 	point p1, p2, p3;
 public:
-	triangle();
-	triangle(point, point,point,string,string);
+	triangle(triangle&);
+	triangle(point, point,point,string,string,string);
 	point getp1();
 	point getp2();
 	point getp3();
+	virtual void draw() override;
+	~triangle();
 };
 
 class ploygon :public shape{
@@ -68,8 +82,10 @@ private:
 	std::vector<int> p;
 	int n;
 public:
-	ploygon();
-	ploygon(string,string,string);
+	ploygon(ploygon&);
+	ploygon(string,string,string,string);
 	int getn();
 	int* getp();
+	virtual void draw() override;
+	~ploygon();
 };

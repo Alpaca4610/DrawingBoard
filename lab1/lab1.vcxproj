@@ -151,7 +151,7 @@
     <ClCompile Include="color.cpp" />
     <ClCompile Include="Coordinate.cpp" />
     <ClCompile Include="controller.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="board.cpp" />
     <ClCompile Include="shape.cpp" />
   </ItemGroup>
   <ItemGroup>
