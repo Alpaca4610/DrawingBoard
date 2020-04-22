@@ -4,6 +4,7 @@ point::point() :point("(300,300)") {}
 
 point::point(std::string s_)//将字符串形式的坐标转换成两个int类型并存储在成员变量中
 {
+	pS = s_;
 	convert(s_);
 }
 
@@ -23,6 +24,11 @@ int point::getx()//getter
 void point::setpoint(std::string s_)//setter
 {
 	convert(s_);
+}
+
+std::string point::getpS()
+{
+	return pS;
 }
 
 int point::gety()//getter

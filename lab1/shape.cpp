@@ -25,6 +25,7 @@ shape::shape(string color_, string filled_,string size_)//½«×Ö·û´®×ª»»³Écolor_tÀ
 		inputbox_getline("ÇëÊäÈëĞèÒªÌî³äÍ¼ĞÎµÄÑÕÉ«", "ÇëÊäÈëĞèÒªÌî³äÍ¼ĞÎµÄÑÕÉ«£¨R´ú±íºìÉ«£¬G´ú±íÂÌÉ«£¬B´ú±íÀ¶É«£©£º£¨»Ø³µÈ·ÈÏ£©", fc, 2);
 		fcolor = new Color{ fc };
 	}
+	numOfObjects++;
 }
 
 
@@ -58,10 +59,22 @@ string* shape::getAOfsize()
 	return &size;
 }
 
+int shape::getnumberObjects()
+{
+	return numOfObjects;
+}
+
+int* shape::getAOnumberObjects()
+{
+	return &numOfObjects;
+}
+
+
 shape::~shape()
 {
 	delete color;
 	delete fcolor;
+	numOfObjects--;
 }
 
 Circle::Circle(Circle& c)//¿½±´¹¹Ôìº¯Êı
@@ -87,6 +100,11 @@ int Circle::getx()//getter
 int Circle::gety()//getter
 {
 	return p.gety();
+}
+
+int Circle::getRadius()
+{
+	return radius;
 }
 
 void Circle::draw()
@@ -199,6 +217,7 @@ Line::Line(Line& l)
 	p2 = l.p2;
 	*color = *(l.color);//Éî¿½±´
 	size = l.size;
+	(*(shape::getAOnumberObjects()))++;
 }
 
 Line::Line(point p1_, point p2_,string c_,string size_)
@@ -207,6 +226,7 @@ Line::Line(point p1_, point p2_,string c_,string size_)
 	p2 = p2_;
 	color = new Color(c_);
 	size = size_;
+	(*(shape::getAOnumberObjects()))++;
 }
 
 Color* Line::getcolor()
@@ -223,6 +243,11 @@ point Line::getp2()
 	return p2;
 }
 
+string Line::getsize()
+{
+	return size;
+}
+
 void Line::draw()
 {
 	controller screen1(size);
@@ -233,6 +258,7 @@ void Line::draw()
 Line::~Line()
 {
 	delete color;
+	(*(shape::getAOnumberObjects()))--;
 }
 
 ploygon::ploygon(ploygon& p1)

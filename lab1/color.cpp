@@ -1,7 +1,8 @@
 #include "color.h"
 
-Color::Color() { color = LIGHTGRAY; }
+Color::Color():Color("W"){}
 Color::Color(std::string s) {
+	s_color = s;
 	setColor(s);
 }
 color_t Color::getcolor() {//getter
@@ -23,4 +24,9 @@ void Color::setColor(std::string s) {//setter
 		color = LIGHTGRAY;
 		break;
 	}
+}
+
+std::string Color::getString()
+{
+	return s_color;
 }

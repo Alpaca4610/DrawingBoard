@@ -10,6 +10,7 @@ private:
 	Color* fcolor{};
 	bool filled{ false };
 	string size;
+	static int numOfObjects;
 public:
 	void convertBool(string);
 	shape() = default;
@@ -21,6 +22,8 @@ public:
 	virtual void draw() = 0;
 	string getsize();
 	string* getAOfsize();
+	static int getnumberObjects();
+	static int* getAOnumberObjects();
 	~shape();
 };
 
@@ -33,6 +36,7 @@ public:
 	Circle(point, int, string, string,string);
 	int getx();
 	int gety();
+	int getRadius();
 	virtual void draw() override;
 	~Circle();
 };
@@ -54,12 +58,14 @@ private:
 	point p1, p2;
 	Color* color;
 	string size;
+	//static int numOfObjects;
 public:
 	Line(Line&);
 	Line(point, point,string,string);
 	Color* getcolor();
 	point getp1();
 	point getp2();
+	string getsize();
 	void draw();
 	~Line();
 };
