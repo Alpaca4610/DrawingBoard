@@ -18,18 +18,23 @@ void shape::convertBool(string filled_)//将字符串转换为bool类型的变量
 	}
 }
 
-shape::shape(string color_, string filled_, string size_)//将字符串转换成color_t类型的变量
+shape::shape(string color_, string filled_, string size_, string flag = "D")//将字符串转换成color_t类型的变量
 {
 	size = size_;
 	color = new Color(color_);
 	convertBool(filled_);
 	char fc[2];
-	if (filled) {//判断如果填充，则要求用户输入填充图形的颜色
-		inputbox_getline("请输入需要填充图形的颜色", "请输入需要填充图形的颜色（R代表红色，G代表绿色，B代表蓝色）：（回车确认）", fc, 2);
-		fcolor = new Color{ fc };
+	if (flag != "D") {
+		fcolor = new Color{ flag.c_str() };
 	}
 	else {
-		fcolor = new Color{ "NULL" };
+		if (filled) {//判断如果填充，则要求用户输入填充图形的颜色
+			inputbox_getline("请输入需要填充图形的颜色", "请输入需要填充图形的颜色（R代表红色，G代表绿色，B代表蓝色）：（回车确认）", fc, 2);
+			fcolor = new Color{ fc };
+		}
+		else {
+			fcolor = new Color{ "NULL" };
+		}
 	}
 	numOfObjects++;
 }
@@ -90,7 +95,7 @@ Circle::Circle(Circle& c)//拷贝构造函数
 	*(this->getAOfsize()) = c.getsize();
 }
 
-Circle::Circle(point p_, int r_, string s_, string filled_, string size_) :shape{ s_, filled_ ,size_ }//利用接收的字符串构造类
+Circle::Circle(point p_, int r_, string s_, string filled_, string size_, string bgc0lor) :shape{ s_, filled_ ,size_ ,bgc0lor }//利用接收的字符串构造类
 {
 	p = p_;
 	radius = r_;
@@ -129,7 +134,11 @@ void Circle::writefile()
 	out.open(p, std::ios::out | std::ios::app);
 	out << "1" << std::endl
 		<< this->getx() << " " << this->gety() << " " << radius << std::endl
-		<< (*(this->getcolor())).getString() << " " << this->isfilled() << std::endl;
+		<< (*(this->getcolor())).getString() << " " << this->isfilled();
+	if (this->isfilled()) {
+		out << " " << (*(this->getbgcolor())).getString();
+	}
+	out << std::endl;
 	out.close();
 }
 
@@ -146,7 +155,7 @@ RectangleC::RectangleC(RectangleC& r)
 	*(this->getAOfsize()) = r.getsize();
 }
 
-RectangleC::RectangleC(point p1_, point p2_, string s_, string filled_, string size_) :shape{ s_,filled_,size_ }
+RectangleC::RectangleC(point p1_, point p2_, string s_, string filled_, string size_, string bgc0lor) :shape{ s_,filled_,size_ ,bgc0lor }
 {
 	p1 = p1_;
 	p2 = p2_;
@@ -180,7 +189,11 @@ void RectangleC::writefile()
 	out.open(p, std::ios::out | std::ios::app);
 	out << "3" << std::endl
 		<< this->getp1().getx() << " " << this->getp1().gety() << " " << this->getp2().getx() << " " << this->getp2().gety() << " " << std::endl
-		<< (*(this->getcolor())).getString() << " " << this->isfilled() << std::endl;
+		<< (*(this->getcolor())).getString() << " " << this->isfilled();
+	if (this->isfilled()) {
+		out << " " << (*(this->getbgcolor())).getString();
+	}
+	out << std::endl;
 	out.close();
 }
 
@@ -198,7 +211,7 @@ triangle::triangle(triangle& t1)
 	*(this->getAOfsize()) = t1.getsize();
 }
 
-triangle::triangle(point p1_, point p2_, point p3_, string c_, string filled_, string size_) :shape(c_, filled_, size_)
+triangle::triangle(point p1_, point p2_, point p3_, string c_, string filled_, string size_, string bgc0lor) :shape(c_, filled_, size_, bgc0lor)
 {
 	p1 = p1_;
 	p2 = p2_;
@@ -238,7 +251,11 @@ void triangle::writefile()
 	out.open(p, std::ios::out | std::ios::app);
 	out << "2" << std::endl
 		<< this->getp1().getx() << " " << this->getp1().gety() << " " << this->getp2().getx() << " " << this->getp2().gety() << " " << this->getp3().getx() << " " << this->getp3().gety() << " " << std::endl
-		<< (*(this->getcolor())).getString() << " " << this->isfilled() << std::endl;
+		<< (*(this->getcolor())).getString() << " " << this->isfilled();
+	if (this->isfilled()) {
+		out << " " << (*(this->getbgcolor())).getString();
+	}
+	out << std::endl;
 	out.close();
 }
 

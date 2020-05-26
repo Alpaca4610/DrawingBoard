@@ -44,7 +44,6 @@ int main()
 			int cmenu1{ 0 };
 			for (; cmenu1 != 53; )
 			{
-				initgraph(640, 480);
 				setcolor(LIGHTGRAY);
 				outtextxy(170, 0, "1.创建一个圆对象");
 				outtextxy(170, 25, "2.查看当前已创建圆对象的参数");
@@ -85,6 +84,7 @@ int main()
 					}
 					getch();
 					cleardevice();
+					initgraph(640, 480);
 					break;
 				}
 				case 51: {
@@ -130,7 +130,6 @@ int main()
 			int cmenu2{ 0 };
 			for (; cmenu2 != 53; )
 			{
-				initgraph(640, 480);
 				setcolor(LIGHTGRAY);
 				outtextxy(170, 0, "1.创建一个矩形对象");
 				outtextxy(170, 25, "2.查看当前已创建矩形对象的参数");
@@ -172,6 +171,7 @@ int main()
 					}
 					getch();
 					cleardevice();
+					initgraph(640, 480);
 					break;
 				}
 				case 51: {
@@ -218,7 +218,6 @@ int main()
 			int cmenu3{ 0 };
 			for (; cmenu3 != 53; )
 			{
-				initgraph(640, 480);
 				setcolor(LIGHTGRAY);
 				outtextxy(170, 0, "1.创建一个三角形对象");
 				outtextxy(170, 25, "2.查看当前已创建三角形对象的参数");
@@ -261,6 +260,7 @@ int main()
 					}
 					getch();
 					cleardevice();
+					initgraph(640, 480);
 					break;
 				}
 				case 51: {
@@ -307,7 +307,6 @@ int main()
 			int cmenu4{ 0 };
 			for (; cmenu4 != 53; )
 			{
-				initgraph(640, 480);
 				setcolor(LIGHTGRAY);
 				outtextxy(170, 0, "1.创建一个线段对象");
 				outtextxy(170, 25, "2.查看当前已创建线段对象的参数");
@@ -328,6 +327,7 @@ int main()
 					outtextxy(100, 0, "创建成功！");
 					getch();
 					cleardevice();
+					initgraph(640, 480);
 					break;
 				}
 				case 50: {
@@ -348,6 +348,7 @@ int main()
 					}
 					getch();
 					cleardevice();
+					initgraph(640, 480);
 					break;
 				}
 				case 51: {
@@ -394,7 +395,6 @@ int main()
 			int cmenu5{ 0 };
 			for (; cmenu5 != 53; )
 			{
-				initgraph(640, 480);
 				setcolor(LIGHTGRAY);
 				outtextxy(170, 0, "1.创建一个多边形对象");
 				outtextxy(170, 25, "2.查看当前已创建多边形对象的参数");
@@ -431,7 +431,7 @@ int main()
 						cleardevice();
 						break;
 					}
-					initgraph(1000, 1000);
+					initgraph(1200, 1200);
 					int j = 0;
 					char temp[200];
 					for (auto i : pStore) {
@@ -441,6 +441,7 @@ int main()
 					}
 					getch();
 					cleardevice();
+					initgraph(640, 480);
 					break;
 				}
 				case 51: {
@@ -502,7 +503,7 @@ int main()
 		}
 		case 55: {
 			cleardevice();
-			outtextxy(0, 25, "现在开始从文件读入数据...注意：如果图形有填充颜色，你需要自定义填充颜色");
+			outtextxy(100, 25, "现在开始从文件读入数据......");
 			std::ifstream in;
 			in.open("figure.txt");
 			int temp;
@@ -512,65 +513,96 @@ int main()
 				switch (temp) {
 				case 1: {
 					int px, py, radius;
-					string color_, filled{ "N" };
+					string color_, filled{ "N" }, bgcolor;
 					bool isfilled;
-					char point_[15];
+					char point_[15], temp[1];
 					in >> px >> py >> radius;
 					in.get();
 					in >> color_ >> isfilled;
+					if (isfilled) {
+						filled = "Y";
+						in >> bgcolor;
+					}
 					in.get();
 					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", point_, 1);
+						inputbox_getline("发生错误！", "读取一个对象的边框颜色时发生错误！使用默认颜色:红色", temp, 1);
 						color_ = "R";
+					}
+					if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", temp, 1);
+						bgcolor = "R";
 					}
 					sprintf_s(point_, "(%d,%d)", px, py);
 					if (isfilled) {
-						filled = "Y";
+						cStore.push_back(new Circle{ point{point_}, radius, color_, filled, "(640,480)",bgcolor });
 					}
-					cStore.push_back(new Circle{ point{point_}, radius, color_, filled, "(640,480)" });
+					else {
+						cStore.push_back(new Circle{ point{point_}, radius, color_, filled, "(640,480)" });
+					}
 					break;
 				}
 				case 2: {
-					char p1[10], p2[10], p3[10];
-					string color_, filled{ "N" };
+					char p1[10], p2[10], p3[10], temp[1];
+					string color_, filled{ "N" }, bgcolor;
 					bool isfilled;
 					int p1x, p1y, p2x, p2y, p3x, p3y;
 					in >> p1x >> p1y >> p2x >> p2y >> p3x >> p3y;
 					in.get();
 					in >> color_ >> isfilled;
+					if (isfilled) {
+						filled = "Y";
+						in >> bgcolor;
+					}
 					in.get();
 					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色", p1, 1);
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色", temp, 1);
 						color_ = { "R" };
+					}
+					if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", temp, 1);
+						bgcolor = { "R" };
 					}
 					sprintf_s(p1, "(%d,%d)", p1x, p1y);
 					sprintf_s(p2, "(%d,%d)", p2x, p2y);
 					sprintf_s(p3, "(%d,%d)", p3x, p3y);
 					if (isfilled) {
 						filled = "Y";
+						tStore.push_back(new triangle{ point(p1),point(p2),point(p3),color_,filled,"(640,480)" ,bgcolor });
 					}
-					tStore.push_back(new triangle{ point(p1),point(p2),point(p3),color_,filled,"(640,480)" });
+					else {
+						tStore.push_back(new triangle{ point(p1),point(p2),point(p3),color_,filled,"(640,480)" });
+					}
 					break;
 				}
 				case 3: {
 					int p1x, p1y, p2x, p2y;
-					string color_, filled{ "N" };
+					string color_, filled{ "N" }, bgcolor;
 					bool isfilled;
-					char p1[10], p2[10];
+					char p1[10], p2[10], temp[1];
 					in >> p1x >> p1y >> p2x >> p2y;
 					in.get();
 					in >> color_ >> isfilled;
-					in.get();
-					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色", p1, 1);
-						color_ = { "R" };
-					}
 					if (isfilled) {
 						filled = "Y";
+						in >> bgcolor;
+					}
+					in.get();
+					if (color_ != "R" && color_ != "G" && color_ != "B") {
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色", temp, 1);
+						color_ = { "R" };
+					}
+					if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", temp, 1);
+						bgcolor = { "R" };
 					}
 					sprintf_s(p1, "(%d,%d)", p1x, p1y);
 					sprintf_s(p2, "(%d,%d)", p2x, p2y);
-					rStore.push_back(new RectangleC{ point(p1),point(p2),color_,filled,"(640,480)" });
+					if (isfilled) {
+						rStore.push_back(new RectangleC{ point(p1),point(p2),color_,filled,"(640,480)" ,bgcolor });
+					}
+					else {
+						rStore.push_back(new RectangleC{ point(p1),point(p2),color_,filled,"(640,480)" });
+					}
 					break;
 				}
 				}

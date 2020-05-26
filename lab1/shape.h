@@ -14,7 +14,7 @@ private:
 public:
 	void convertBool(string);
 	shape() = default;
-	shape(string, string, string);
+	shape(string, string, string, string);
 	bool isfilled();
 	void setfilled(bool);
 	Color* getcolor();
@@ -34,7 +34,7 @@ private:
 	int radius;
 public:
 	Circle(Circle&);
-	Circle(point, int, string, string, string);
+	Circle(point, int, string, string, string, string bgc0lor = "D");
 	int getx();
 	int gety();
 	int getRadius();
@@ -48,7 +48,7 @@ private:
 	point p1, p2;
 public:
 	RectangleC(RectangleC&);
-	RectangleC(point, point, string, string, string);
+	RectangleC(point, point, string, string, string, string bgc0lor = "D");
 	point getp1();
 	point getp2();
 	virtual void draw() override;
@@ -78,7 +78,7 @@ private:
 	point p1, p2, p3;
 public:
 	triangle(triangle&);
-	triangle(point, point, point, string, string, string);
+	triangle(point, point, point, string, string, string, string bgc0lor = "D");
 	point getp1();
 	point getp2();
 	point getp3();
