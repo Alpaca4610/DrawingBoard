@@ -1,6 +1,6 @@
 #include "color.h"
 
-Color::Color():Color("W"){}
+Color::Color() :Color("W") {}
 Color::Color(std::string s) {
 	s_color = s;
 	setColor(s);
@@ -22,6 +22,8 @@ void Color::setColor(std::string s) {//setter
 		break;
 	case(87):
 		color = LIGHTGRAY;
+	case(78):
+		color = BLACK;
 		break;
 	}
 }

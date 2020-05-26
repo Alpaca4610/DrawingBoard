@@ -3,19 +3,22 @@
 #include "ege.h"
 #include <string>
 #include "controller.h"
+#include <filesystem>
+#include <fstream>
 #pragma warning(disable:4996) //ÆôÓÃege¿â±»½ûÓÃµÄº¯Êı
+namespace fs = std::filesystem;
 
 void shape::convertBool(string filled_)//½«×Ö·û´®×ª»»ÎªboolÀàĞÍµÄ±äÁ¿
 {
 	if ('Y' == filled_[0]) {
 		filled = true;
-	}	
+	}
 	else if ('N' == filled_[0]) {
 		filled = false;
 	}
 }
 
-shape::shape(string color_, string filled_,string size_)//½«×Ö·û´®×ª»»³Écolor_tÀàĞÍµÄ±äÁ¿
+shape::shape(string color_, string filled_, string size_)//½«×Ö·û´®×ª»»³Écolor_tÀàĞÍµÄ±äÁ¿
 {
 	size = size_;
 	color = new Color(color_);
@@ -25,9 +28,11 @@ shape::shape(string color_, string filled_,string size_)//½«×Ö·û´®×ª»»³Écolor_tÀ
 		inputbox_getline("ÇëÊäÈëĞèÒªÌî³äÍ¼ĞÎµÄÑÕÉ«", "ÇëÊäÈëĞèÒªÌî³äÍ¼ĞÎµÄÑÕÉ«£¨R´ú±íºìÉ«£¬G´ú±íÂÌÉ«£¬B´ú±íÀ¶É«£©£º£¨»Ø³µÈ·ÈÏ£©", fc, 2);
 		fcolor = new Color{ fc };
 	}
+	else {
+		fcolor = new Color{ "NULL" };
+	}
 	numOfObjects++;
 }
-
 
 bool shape::isfilled()//getter
 {
@@ -69,7 +74,6 @@ int* shape::getAOnumberObjects()
 	return &numOfObjects;
 }
 
-
 shape::~shape()
 {
 	delete color;
@@ -109,19 +113,29 @@ int Circle::getRadius()
 
 void Circle::draw()
 {
-	controller screen1(this -> getsize());//´´½¨»­°åÆÁÄ»¶ÔÏóÈÃÓÃ»§×Ô¶¨Òå´óĞ¡
-	setcolor((*(this -> getcolor())).getcolor());//ÉèÖÃÔ²±ß½çµÄÑÕÉ«
-	circle(static_cast<int>(this->getx()), this -> gety(), radius);//»­Ô²º¯Êı
-	if (this -> isfilled()) {
-		setfillcolor(((*this -> getbgcolor())).getcolor());
-		floodfill(this -> getx(), this -> gety(), (*(this -> getcolor())).getcolor());
+	controller screen1(this->getsize());//´´½¨»­°åÆÁÄ»¶ÔÏóÈÃÓÃ»§×Ô¶¨Òå´óĞ¡
+	setcolor((*(this->getcolor())).getcolor());//ÉèÖÃÔ²±ß½çµÄÑÕÉ«
+	circle(static_cast<int>(this->getx()), this->gety(), radius);//»­Ô²º¯Êı
+	if (this->isfilled()) {
+		setfillcolor(((*this->getbgcolor())).getcolor());
+		floodfill(this->getx(), this->gety(), (*(this->getcolor())).getcolor());
 	}//ÅĞ¶ÏÍ¼ĞÎÊÇ·ñÌî³ä£¬ÈôÌî³ä£¬Ê¹ÓÃÔ²ĞÄ×÷ÎªfloodfillµÄÒ»¸ö²ÎÊı½øĞĞÌî³ä
+}
+
+void Circle::writefile()
+{
+	fs::path p{ "figure.txt" };
+	std::ofstream out;
+	out.open(p, std::ios::out | std::ios::app);
+	out << "1" << std::endl
+		<< this->getx() << " " << this->gety() << " " << radius << std::endl
+		<< (*(this->getcolor())).getString() << " " << this->isfilled() << std::endl;
+	out.close();
 }
 
 Circle::~Circle()
 {
 }
-
 
 RectangleC::RectangleC(RectangleC& r)
 {
@@ -132,7 +146,7 @@ RectangleC::RectangleC(RectangleC& r)
 	*(this->getAOfsize()) = r.getsize();
 }
 
-RectangleC::RectangleC(point p1_, point p2_, string s_, string filled_,string size_):shape{s_,filled_,size_}
+RectangleC::RectangleC(point p1_, point p2_, string s_, string filled_, string size_) :shape{ s_,filled_,size_ }
 {
 	p1 = p1_;
 	p2 = p2_;
@@ -150,13 +164,24 @@ point RectangleC::getp2()//getter
 
 void RectangleC::draw()
 {
-	controller screen1(this -> getsize());
-	setcolor((*(this -> getcolor())).getcolor());
-	rectangle(this -> getp1().getx(), this -> getp1().gety(), this -> getp2().getx(), this -> getp2().gety());
-	if (this -> isfilled()) {
-		setfillcolor((*(this -> getbgcolor())).getcolor());
-		floodfill((this -> getp1().getx()) + 1, (this -> getp1().gety()) - 2, (*(this -> getcolor())).getcolor());
+	controller screen1(this->getsize());
+	setcolor((*(this->getcolor())).getcolor());
+	rectangle(this->getp1().getx(), this->getp1().gety(), this->getp2().getx(), this->getp2().gety());
+	if (this->isfilled()) {
+		setfillcolor((*(this->getbgcolor())).getcolor());
+		floodfill((this->getp1().getx()) + 1, (this->getp1().gety()) - 2, (*(this->getcolor())).getcolor());
 	}//½«¾ØĞÎ×óÉÏ½ÇµÄ×ø±ê×ö±ä»»´¦Àíºó×÷ÎªfloodfillµÄÒ»¸ö²ÎÊı½øĞĞÌî³ä
+}
+
+void RectangleC::writefile()
+{
+	fs::path p{ "figure.txt" };
+	std::ofstream out;
+	out.open(p, std::ios::out | std::ios::app);
+	out << "3" << std::endl
+		<< this->getp1().getx() << " " << this->getp1().gety() << " " << this->getp2().getx() << " " << this->getp2().gety() << " " << std::endl
+		<< (*(this->getcolor())).getString() << " " << this->isfilled() << std::endl;
+	out.close();
 }
 
 RectangleC::~RectangleC()
@@ -173,7 +198,7 @@ triangle::triangle(triangle& t1)
 	*(this->getAOfsize()) = t1.getsize();
 }
 
-triangle::triangle(point p1_, point p2_, point p3_,string c_,string filled_,string size_):shape(c_,filled_,size_)
+triangle::triangle(point p1_, point p2_, point p3_, string c_, string filled_, string size_) :shape(c_, filled_, size_)
 {
 	p1 = p1_;
 	p2 = p2_;
@@ -197,19 +222,29 @@ point triangle::getp3()
 
 void triangle::draw()
 {
-	controller screen1(this -> getsize());
-	int pt[] = { this -> getp1().getx(),this -> getp1().gety(), this -> getp2().getx(), this -> getp2().gety(), this -> getp3().getx(), this -> getp3().gety() };//ÀûÓÃ½ÓÊÕµ½µÄµã×ø±êÊı¾İ´´½¨Ò»¸öÊı×é
-	setcolor((*(this -> getcolor())).getcolor());
-	if (this -> isfilled()) {
-		setfillstyle(SOLID_FILL, (*(this -> getbgcolor())).getcolor());//ÓëfillployÒ»ÆğÊ¹ÓÃµÄÌî³äº¯Êı
+	controller screen1(this->getsize());
+	int pt[] = { this->getp1().getx(),this->getp1().gety(), this->getp2().getx(), this->getp2().gety(), this->getp3().getx(), this->getp3().gety() };//ÀûÓÃ½ÓÊÕµ½µÄµã×ø±êÊı¾İ´´½¨Ò»¸öÊı×é
+	setcolor((*(this->getcolor())).getcolor());
+	if (this->isfilled()) {
+		setfillstyle(SOLID_FILL, (*(this->getbgcolor())).getcolor());//ÓëfillployÒ»ÆğÊ¹ÓÃµÄÌî³äº¯Êı
 	}
 	fillpoly(3, pt);//´´½¨Ò»¸öÈıÌõ±ß£¬¶¥µã×ø±êÎªÊı×éÖĞÔªËØÖµµÄÈı½ÇĞÎ¶ÔÏó
+}
+
+void triangle::writefile()
+{
+	fs::path p{ "figure.txt" };
+	std::ofstream out;
+	out.open(p, std::ios::out | std::ios::app);
+	out << "2" << std::endl
+		<< this->getp1().getx() << " " << this->getp1().gety() << " " << this->getp2().getx() << " " << this->getp2().gety() << " " << this->getp3().getx() << " " << this->getp3().gety() << " " << std::endl
+		<< (*(this->getcolor())).getString() << " " << this->isfilled() << std::endl;
+	out.close();
 }
 
 triangle::~triangle()
 {
 }
-
 
 Line::Line(Line& l)
 {
@@ -220,7 +255,7 @@ Line::Line(Line& l)
 	(*(shape::getAOnumberObjects()))++;
 }
 
-Line::Line(point p1_, point p2_,string c_,string size_)
+Line::Line(point p1_, point p2_, string c_, string size_)
 {
 	p1 = p1_;
 	p2 = p2_;
@@ -251,8 +286,8 @@ string Line::getsize()
 void Line::draw()
 {
 	controller screen1(size);
-	setcolor((*(this -> getcolor())).getcolor());
-	line(this -> getp1().getx(), this -> getp1().gety(), this -> getp2().getx(), this -> getp2().gety());//»­Ïß
+	setcolor((*(this->getcolor())).getcolor());
+	line(this->getp1().getx(), this->getp1().gety(), this->getp2().getx(), this->getp2().gety());//»­Ïß
 }
 
 Line::~Line()
@@ -270,12 +305,12 @@ ploygon::ploygon(ploygon& p1)
 	*(this->getAOfsize()) = p1.getsize();
 }
 
-ploygon::ploygon(string n_,string color_,string filled_,string size_):shape(color_,filled_,size_)
+ploygon::ploygon(string n_, string color_, string filled_, string size_) :shape(color_, filled_, size_)
 {
 	n = std::stoi(n_);
 	for (int i = 0; i < n; i++) {//¸ù¾İÓÃ»§ÊäÈëµÄ¶¥µãÊı´´½¨vector´æ´¢¶¥µã×ø±ê
 		char p_temp[15];
-		inputbox_getline("ÇëÊäÈë¶¥µã×ø±ê", "ÇëÊäÈë¶¥µã×ø±ê(Èç(233,233))£¨»Ø³µÈ·ÈÏ£©",p_temp ,15);
+		inputbox_getline("ÇëÊäÈë¶¥µã×ø±ê", "ÇëÊäÈë¶¥µã×ø±ê(Èç(233,233))£¨»Ø³µÈ·ÈÏ£©", p_temp, 15);
 		point p_{ p_temp };
 		p.push_back(p_.getx());
 		p.push_back(p_.gety());
@@ -296,15 +331,19 @@ int* ploygon::getp()//½«vector×ª»»³ÉÕûÊıÊı×é²¢·µ»Ø
 
 void ploygon::draw()
 {
-	controller screen1(this -> getsize());
-	setfillcolor((*(this -> getcolor())).getcolor());
-	if (this -> isfilled()) {
-		setfillstyle(SOLID_FILL, (*(this -> getcolor())).getcolor());
+	controller screen1(this->getsize());
+	setfillcolor((*(this->getcolor())).getcolor());
+	if (this->isfilled()) {
+		setfillstyle(SOLID_FILL, (*(this->getcolor())).getcolor());
 	}
-	fillpoly(this -> getn(), this -> getp());
+	fillpoly(this->getn(), this->getp());
+}
+
+void ploygon::writefile()
+{
 }
 
 ploygon::~ploygon()
 {
-	delete[]this -> getp();
+	delete[]this->getp();
 }
