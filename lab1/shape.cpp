@@ -307,6 +307,17 @@ void Line::draw()
 	line(this->getp1().getx(), this->getp1().gety(), this->getp2().getx(), this->getp2().gety());//»­Ïß
 }
 
+void Line::writefile()
+{
+	fs::path p{ "figure.txt" };
+	std::ofstream out;
+	out.open(p, std::ios::out | std::ios::app);
+	out << "4" << std::endl
+		<< this->getp1().getx() << " " << this->getp1().gety() << " " << this->getp2().getx() << " " << this->getp2().gety() << std::endl
+		<< (*(this->getcolor())).getString() << std::endl;
+	out.close();
+}
+
 Line::~Line()
 {
 	delete color;

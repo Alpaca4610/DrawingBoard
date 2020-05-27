@@ -56,6 +56,20 @@ public:
 	~RectangleC();
 };
 
+class triangle :public shape {
+private:
+	point p1, p2, p3;
+public:
+	triangle(triangle&);
+	triangle(point, point, point, string, string, string, string bgc0lor = "D");
+	point getp1();
+	point getp2();
+	point getp3();
+	virtual void draw() override;
+	virtual void writefile() override;
+	~triangle();
+};
+
 class Line {
 private:
 	point p1, p2;
@@ -70,21 +84,8 @@ public:
 	point getp2();
 	string getsize();
 	void draw();
+	void writefile();
 	~Line();
-};
-
-class triangle :public shape {
-private:
-	point p1, p2, p3;
-public:
-	triangle(triangle&);
-	triangle(point, point, point, string, string, string, string bgc0lor = "D");
-	point getp1();
-	point getp2();
-	point getp3();
-	virtual void draw() override;
-	virtual void writefile() override;
-	~triangle();
 };
 
 class ploygon :public shape {

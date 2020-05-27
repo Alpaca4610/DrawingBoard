@@ -26,15 +26,15 @@ int main()
 	{
 		setcolor(LIGHTGRAY);
 		cleardevice();
-		outtextxy(100, 0, "欢迎使用Alpaca Drawing Board Ver4.0！");
+		outtextxy(125, 0, "欢迎使用Alpaca Drawing Board Ver4.2！");
 		outtextxy(170, 25, "1.圆形绘图菜单");
 		outtextxy(170, 50, "2.矩形绘图菜单");
 		outtextxy(170, 75, "3.三角形绘图菜单");
 		outtextxy(170, 100, "4.线段绘图菜单");
 		outtextxy(170, 125, "5.多边形绘图菜单");
-		outtextxy(170, 150, "6.将目前存储的图形对象保存至文件");
-		outtextxy(170, 175, "7.从文件中读取图形对象数据");
-		outtextxy(170, 200, "8.查看当前一共创建的对象个数");
+		outtextxy(170, 150, "6.导出图形对象参数保存至文件");
+		outtextxy(170, 175, "7.从文件中导入图形对象参数");
+		outtextxy(170, 200, "8.查看当前所有图形对象个数");
 		outtextxy(170, 225, "9.初始化画板大小");
 		outtextxy(170, 250, "0.退出");
 		k = getch();
@@ -485,18 +485,29 @@ int main()
 
 		case 54: {
 			cleardevice();
-			outtextxy(100, 25, "开始将数据保存成文件......");
+			outtextxy(100, 0, "开始将数据保存成文件......");
+			outtextxy(75, 25, "支持圆、三角形、矩形、线段对象参数的导出");
+			int num = 0;
 			for (auto i : cStore) {
 				(*i).writefile();
+				num++;
 			}
 			for (auto i : tStore) {
 				(*i).writefile();
+				num++;
 			}
 			for (auto i : rStore) {
 				(*i).writefile();
-				break;
+				num++;
 			}
-			outtextxy(100, 50, "已保存！按下任意键返回主菜单！");
+			for (auto i : LStore) {
+				(*i).writefile();
+				num++;
+			}
+			char notice[100];
+			sprintf_s(notice, "已导出%d个对象！按下任意键返回主菜单！", num);
+			outtextxy(100, 50, notice);
+
 			getch();
 			cleardevice();
 			break;
@@ -507,7 +518,9 @@ int main()
 			std::ifstream in;
 			in.open("figure.txt");
 			int temp;
+			int num = 0;
 			while (in.peek() != EOF) {//flag
+				num++;
 				in >> temp;
 				in.get();
 				switch (temp) {
@@ -515,7 +528,7 @@ int main()
 					int px, py, radius;
 					string color_, filled{ "N" }, bgcolor;
 					bool isfilled;
-					char point_[15], temp[1];
+					char point_[15], temp_[1];
 					in >> px >> py >> radius;
 					in.get();
 					in >> color_ >> isfilled;
@@ -525,11 +538,11 @@ int main()
 					}
 					in.get();
 					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的边框颜色时发生错误！使用默认颜色:红色", temp, 1);
+						inputbox_getline("发生错误！", "读取一个对象的边框颜色时发生错误！使用默认颜色:红色", temp_, 1);
 						color_ = "R";
 					}
 					if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", temp, 1);
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", temp_, 1);
 						bgcolor = "R";
 					}
 					sprintf_s(point_, "(%d,%d)", px, py);
@@ -542,7 +555,7 @@ int main()
 					break;
 				}
 				case 2: {
-					char p1[10], p2[10], p3[10], temp[1];
+					char p1[10], p2[10], p3[10], temp_[1];
 					string color_, filled{ "N" }, bgcolor;
 					bool isfilled;
 					int p1x, p1y, p2x, p2y, p3x, p3y;
@@ -555,11 +568,11 @@ int main()
 					}
 					in.get();
 					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色", temp, 1);
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色", temp_, 1);
 						color_ = { "R" };
 					}
 					if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", temp, 1);
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", temp_, 1);
 						bgcolor = { "R" };
 					}
 					sprintf_s(p1, "(%d,%d)", p1x, p1y);
@@ -578,7 +591,7 @@ int main()
 					int p1x, p1y, p2x, p2y;
 					string color_, filled{ "N" }, bgcolor;
 					bool isfilled;
-					char p1[10], p2[10], temp[1];
+					char p1[10], p2[10], temp_[1];
 					in >> p1x >> p1y >> p2x >> p2y;
 					in.get();
 					in >> color_ >> isfilled;
@@ -588,11 +601,11 @@ int main()
 					}
 					in.get();
 					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色", temp, 1);
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色", temp_, 1);
 						color_ = { "R" };
 					}
 					if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", temp, 1);
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", temp_, 1);
 						bgcolor = { "R" };
 					}
 					sprintf_s(p1, "(%d,%d)", p1x, p1y);
@@ -605,11 +618,31 @@ int main()
 					}
 					break;
 				}
+				case 4: {
+					int p1x, p1y, p2x, p2y;
+					string color_;
+					char p1[10], p2[10], temp_[1];
+					in >> p1x >> p1y >> p2x >> p2y;
+					in.get();
+					in >> color_;
+					in.get();
+					if (color_ != "R" && color_ != "G" && color_ != "B") {
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色", temp_, 1);
+						color_ = { "R" };
+					}
+					sprintf_s(p1, "(%d,%d)", p1x, p1y);
+					sprintf_s(p2, "(%d,%d)", p2x, p2y);
+					LStore.push_back(new Line(point(p1), point(p2), color_, "(640,480)"));
+					break;
+				}
 				}
 			}
-			outtextxy(100, 50, "数据读入完成！按任意键退出！");
+			char notice[100];
+			sprintf_s(notice, "已导入%d个对象！按下任意键返回主菜单！", num);
+			outtextxy(100, 50, notice);
 			getch();
 			cleardevice();
+			in.close();
 			break;
 		}
 
