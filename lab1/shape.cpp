@@ -138,6 +138,7 @@ void Circle::writefile()
 	if (this->isfilled()) {
 		out << " " << (*(this->getbgcolor())).getString();
 	}
+	out << std::endl << this->getsize();
 	out << std::endl;
 	out.close();
 }
@@ -184,15 +185,16 @@ void RectangleC::draw()
 
 void RectangleC::writefile()
 {
-	fs::path p{ "figure.txt" };
+	fs::path p{ "figure.txt" };//使用filesystem中的路径类构造对象
 	std::ofstream out;
-	out.open(p, std::ios::out | std::ios::app);
-	out << "3" << std::endl
+	out.open(p, std::ios::out | std::ios::app);//使用app、out输出模式向文件末尾输出信息
+	out << "3" << std::endl//输出图形ID
 		<< this->getp1().getx() << " " << this->getp1().gety() << " " << this->getp2().getx() << " " << this->getp2().gety() << " " << std::endl
-		<< (*(this->getcolor())).getString() << " " << this->isfilled();
-	if (this->isfilled()) {
+		<< (*(this->getcolor())).getString() << " " << this->isfilled();//将图形的特征信息输出到文件中
+	if (this->isfilled()) {//判断是否需要输出填充颜色参数
 		out << " " << (*(this->getbgcolor())).getString();
 	}
+	out << std::endl << this->getsize();//输出画板大小信息
 	out << std::endl;
 	out.close();
 }
@@ -255,6 +257,7 @@ void triangle::writefile()
 	if (this->isfilled()) {
 		out << " " << (*(this->getbgcolor())).getString();
 	}
+	out << std::endl << this->getsize();
 	out << std::endl;
 	out.close();
 }
@@ -315,6 +318,7 @@ void Line::writefile()
 	out << "4" << std::endl
 		<< this->getp1().getx() << " " << this->getp1().gety() << " " << this->getp2().getx() << " " << this->getp2().gety() << std::endl
 		<< (*(this->getcolor())).getString() << std::endl;
+	out << this->getsize() << std::endl;
 	out.close();
 }
 

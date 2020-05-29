@@ -26,7 +26,7 @@ int main()
 	{
 		setcolor(LIGHTGRAY);
 		cleardevice();
-		outtextxy(125, 0, "欢迎使用Alpaca Drawing Board Ver4.2！");
+		outtextxy(125, 0, "欢迎使用Alpaca Drawing Board Ver4.3！");
 		outtextxy(170, 25, "1.圆形绘图菜单");
 		outtextxy(170, 50, "2.矩形绘图菜单");
 		outtextxy(170, 75, "3.三角形绘图菜单");
@@ -35,7 +35,7 @@ int main()
 		outtextxy(170, 150, "6.导出图形对象参数保存至文件");
 		outtextxy(170, 175, "7.从文件中导入图形对象参数");
 		outtextxy(170, 200, "8.查看当前所有图形对象个数");
-		outtextxy(170, 225, "9.初始化画板大小");
+		outtextxy(170, 225, "9.自由绘图");
 		outtextxy(170, 250, "0.退出");
 		k = getch();
 		switch (k) {
@@ -100,6 +100,7 @@ int main()
 					cStore[std::stoi(id)]->draw();
 					getch();
 					cleardevice();
+					initgraph(640, 480);
 					break;
 				}
 				case 52: {
@@ -187,6 +188,7 @@ int main()
 					rStore[std::stoi(id)]->draw();
 					getch();
 					cleardevice();
+					initgraph(640, 480);
 					break;
 				}
 				case 52: {
@@ -276,6 +278,7 @@ int main()
 					tStore[std::stoi(id)]->draw();
 					getch();
 					cleardevice();
+					initgraph(640, 480);
 					break;
 				}
 				case 52: {
@@ -364,6 +367,7 @@ int main()
 					LStore[std::stoi(id)]->draw();
 					getch();
 					cleardevice();
+					initgraph(640, 480);
 					break;
 				}
 				case 52: {
@@ -457,6 +461,7 @@ int main()
 					pStore[std::stoi(id)]->draw();
 					getch();
 					cleardevice();
+					initgraph(640, 480);
 					break;
 				}
 				case 52: {
@@ -519,44 +524,46 @@ int main()
 			in.open("figure.txt");
 			int temp;
 			int num = 0;
-			while (in.peek() != EOF) {//flag
-				num++;
-				in >> temp;
-				in.get();
-				switch (temp) {
+			while (in.peek() != EOF) {//判断是否到达参数列表的尾部，若未到达，则循环存取数据
+				num++;//计数
+				in >> temp;//读取图形ID
+				in.get();//游标进入下一行
+				switch (temp) {//不同的图形ID执行不同的存取操作
 				case 1: {
 					int px, py, radius;
-					string color_, filled{ "N" }, bgcolor;
+					string color_, filled{ "N" }, bgcolor, size_;
 					bool isfilled;
 					char point_[15], temp_[1];
-					in >> px >> py >> radius;
-					in.get();
-					in >> color_ >> isfilled;
-					if (isfilled) {
+					in >> px >> py >> radius;//存取图形的特征信息
+					in.get();//进入下一行
+					in >> color_ >> isfilled;//读取图形的填充状态信息
+					if (isfilled) {//判断图形是否填充，若填充，则接着读取填充颜色信息
 						filled = "Y";
 						in >> bgcolor;
+						if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
+							inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色 在输入框中回车退出", temp_, 1);
+							bgcolor = "R";
+						}
 					}
+					in.get();//进入下一行
+					if (color_ != "R" && color_ != "G" && color_ != "B") {//判断图形颜色数据是否合法
+						inputbox_getline("发生错误！", "读取一个对象的边框颜色时发生错误！使用默认颜色:红色 在输入框中回车退出", temp_, 1);//使用输入框的形式提醒用户
+						color_ = "R";//使用默认颜色：红色
+					}
+					in >> size_;//读取画板大小信息
 					in.get();
-					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的边框颜色时发生错误！使用默认颜色:红色", temp_, 1);
-						color_ = "R";
-					}
-					if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", temp_, 1);
-						bgcolor = "R";
-					}
 					sprintf_s(point_, "(%d,%d)", px, py);
-					if (isfilled) {
-						cStore.push_back(new Circle{ point{point_}, radius, color_, filled, "(640,480)",bgcolor });
+					if (isfilled) {//使用从文件读取的信息，利用构造函数创建对象
+						cStore.push_back(new Circle{ point{point_}, radius, color_, filled, size_,bgcolor });
 					}
 					else {
-						cStore.push_back(new Circle{ point{point_}, radius, color_, filled, "(640,480)" });
+						cStore.push_back(new Circle{ point{point_}, radius, color_, filled, size_ });
 					}
 					break;
 				}
 				case 2: {
 					char p1[10], p2[10], p3[10], temp_[1];
-					string color_, filled{ "N" }, bgcolor;
+					string color_, filled{ "N" }, bgcolor, size_;
 					bool isfilled;
 					int p1x, p1y, p2x, p2y, p3x, p3y;
 					in >> p1x >> p1y >> p2x >> p2y >> p3x >> p3y;
@@ -565,31 +572,33 @@ int main()
 					if (isfilled) {
 						filled = "Y";
 						in >> bgcolor;
+						if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
+							inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色 在输入框中回车退出", temp_, 1);
+							bgcolor = { "R" };
+						}
 					}
 					in.get();
 					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色", temp_, 1);
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色 在输入框中回车退出", temp_, 1);
 						color_ = { "R" };
 					}
-					if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", temp_, 1);
-						bgcolor = { "R" };
-					}
+					in >> size_;
+					in.get();
 					sprintf_s(p1, "(%d,%d)", p1x, p1y);
 					sprintf_s(p2, "(%d,%d)", p2x, p2y);
 					sprintf_s(p3, "(%d,%d)", p3x, p3y);
 					if (isfilled) {
 						filled = "Y";
-						tStore.push_back(new triangle{ point(p1),point(p2),point(p3),color_,filled,"(640,480)" ,bgcolor });
+						tStore.push_back(new triangle{ point(p1),point(p2),point(p3),color_,filled,size_ ,bgcolor });
 					}
 					else {
-						tStore.push_back(new triangle{ point(p1),point(p2),point(p3),color_,filled,"(640,480)" });
+						tStore.push_back(new triangle{ point(p1),point(p2),point(p3),color_,filled,size_ });
 					}
 					break;
 				}
 				case 3: {
 					int p1x, p1y, p2x, p2y;
-					string color_, filled{ "N" }, bgcolor;
+					string color_, filled{ "N" }, bgcolor, size_;
 					bool isfilled;
 					char p1[10], p2[10], temp_[1];
 					in >> p1x >> p1y >> p2x >> p2y;
@@ -598,41 +607,45 @@ int main()
 					if (isfilled) {
 						filled = "Y";
 						in >> bgcolor;
+						if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
+							inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色 在输入框中回车退出", temp_, 1);
+							bgcolor = { "R" };
+						}
 					}
 					in.get();
 					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色", temp_, 1);
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色 在输入框中回车退出", temp_, 1);
 						color_ = { "R" };
 					}
-					if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色", temp_, 1);
-						bgcolor = { "R" };
-					}
+					in >> size_;
+					in.get();
 					sprintf_s(p1, "(%d,%d)", p1x, p1y);
 					sprintf_s(p2, "(%d,%d)", p2x, p2y);
 					if (isfilled) {
-						rStore.push_back(new RectangleC{ point(p1),point(p2),color_,filled,"(640,480)" ,bgcolor });
+						rStore.push_back(new RectangleC{ point(p1),point(p2),color_,filled,size_ ,bgcolor });
 					}
 					else {
-						rStore.push_back(new RectangleC{ point(p1),point(p2),color_,filled,"(640,480)" });
+						rStore.push_back(new RectangleC{ point(p1),point(p2),color_,filled,size_ });
 					}
 					break;
 				}
 				case 4: {
 					int p1x, p1y, p2x, p2y;
-					string color_;
+					string color_, size_;
 					char p1[10], p2[10], temp_[1];
 					in >> p1x >> p1y >> p2x >> p2y;
 					in.get();
 					in >> color_;
 					in.get();
 					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色", temp_, 1);
+						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色 在输入框中回车退出", temp_, 1);
 						color_ = { "R" };
 					}
+					in >> size_;
+					in.get();
 					sprintf_s(p1, "(%d,%d)", p1x, p1y);
 					sprintf_s(p2, "(%d,%d)", p2x, p2y);
-					LStore.push_back(new Line(point(p1), point(p2), color_, "(640,480)"));
+					LStore.push_back(new Line(point(p1), point(p2), color_, size_));
 					break;
 				}
 				}
@@ -646,23 +659,7 @@ int main()
 			break;
 		}
 
-			   /*		case 54: {
-						   cleardevice();
-						   char size[15], col[3];
-						   int x, y;
-						   inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：(例：(640，480))：(回车确认)", size, 15);
-						   controller screen1(size);
-						   inputbox_getline("请输入绘图的颜色：", "请输入绘图的颜色(R代表红色，G代表绿色，B代表蓝色，W代表白色))：(回车确认)", col, 3);
-						   inputbox_getline("按下回车键开始绘图，若要结束绘图，再按任意键", "按下回车键开始绘图，若要结束绘图，再按任意键", size, 3);//给用户缓冲时间
-						   Color c(col);
-						   for (; !kbmsg(); delay_fps(300)) {
-							   mousepos(&x, &y);//获取当前鼠标位置
-							   putpixel(x, y, c.getcolor());//在鼠标当前位置打点
-						   }
-						   cleardevice();
-						   break;
-					   }
-
+			   /*
 					   case 55: {
 						   cleardevice();
 						   int x{ 0 }, y{ 0 };
@@ -694,9 +691,20 @@ int main()
 		}
 
 		case 57: {
-			initgraph(640, 480);//将画板设置成初始大小
-			setcolor(LIGHTGRAY);//将绘图颜色设置成默认颜色
-			outtextxy(320, 320, "初始化完成！");
+			cleardevice();
+			char size[15], col[3];
+			int x, y;
+			inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：(例：(640，480))：(回车确认)", size, 15);
+			controller screen1(size);
+			inputbox_getline("请输入绘图的颜色：", "请输入绘图的颜色(R代表红色，G代表绿色，B代表蓝色，W代表白色))：(回车确认)", col, 3);
+			inputbox_getline("按下回车键开始绘图，若要结束绘图，再按任意键", "按下回车键开始绘图，若要结束绘图，再按任意键", size, 3);//给用户缓冲时间
+			Color c(col);
+			for (; !kbmsg(); delay_fps(300)) {
+				mousepos(&x, &y);//获取当前鼠标位置
+				putpixel(x, y, c.getcolor());//在鼠标当前位置打点
+			}
+			cleardevice();
+			initgraph(640, 480);
 			break;
 		}
 
