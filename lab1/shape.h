@@ -13,7 +13,7 @@ private:
 	static int numOfObjects;
 public:
 	void convertBool(string);
-	shape() = default;
+	shape();
 	shape(string, string, string, string);
 	bool isfilled();
 	void setfilled(bool);
@@ -22,6 +22,7 @@ public:
 	virtual void draw() = 0;
 	string getsize();
 	string* getAOfsize();
+	bool* getisfilled();
 	static int getnumberObjects();
 	static int* getAOnumberObjects();
 	virtual void writefile() = 0;
@@ -33,13 +34,21 @@ private:
 	point p;
 	int radius;
 public:
-	Circle(Circle&);
+	//Circle(Circle&);
+	Circle();
 	Circle(point, int, string, string, string, string bgc0lor = "D");
 	int getx();
 	int gety();
 	int getRadius();
 	virtual void draw() override;
 	virtual void writefile() override;
+	bool operator<(const Circle&);
+	bool operator>(const Circle&);
+	bool operator<=(const Circle&);
+	bool operator>=(const Circle&);
+	bool operator==(const Circle&);
+	bool operator!=(const Circle&);
+	Circle& operator=(Circle&);
 	~Circle();
 };
 

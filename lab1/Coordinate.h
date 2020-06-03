@@ -13,4 +13,8 @@ public:
 	int gety();
 	void setpoint(std::string);
 	std::string getpS();
+	point operator+(const point);
+	bool operator==(const point);
+	bool operator!=(const point);
+	int& operator[](const int);
 };

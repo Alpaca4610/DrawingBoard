@@ -21,35 +21,37 @@ int main()
 	std::vector<triangle*> tStore;
 	std::vector<Line*> LStore;
 	std::vector<ploygon*> pStore;
+	std::vector<Color*> CoStore;
 
 	for (; k != key_esc; ) // key_esc是ege定义的按键常数
 	{
 		setcolor(LIGHTGRAY);
 		cleardevice();
 		outtextxy(125, 0, "欢迎使用Alpaca Drawing Board Ver4.3！");
-		outtextxy(170, 25, "1.圆形绘图菜单");
-		outtextxy(170, 50, "2.矩形绘图菜单");
-		outtextxy(170, 75, "3.三角形绘图菜单");
-		outtextxy(170, 100, "4.线段绘图菜单");
-		outtextxy(170, 125, "5.多边形绘图菜单");
-		outtextxy(170, 150, "6.导出图形对象参数保存至文件");
-		outtextxy(170, 175, "7.从文件中导入图形对象参数");
-		outtextxy(170, 200, "8.查看当前所有图形对象个数");
-		outtextxy(170, 225, "9.自由绘图");
-		outtextxy(170, 250, "0.退出");
+		outtextxy(185, 25, "1.圆形绘图菜单");
+		outtextxy(185, 50, "2.矩形绘图菜单");
+		outtextxy(185, 75, "3.三角形绘图菜单");
+		outtextxy(185, 100, "4.线段绘图菜单");
+		outtextxy(185, 125, "5.多边形绘图菜单");
+		outtextxy(185, 150, "6.导出图形对象参数保存至文件");
+		outtextxy(185, 175, "7.从文件中导入图形对象参数");
+		outtextxy(185, 200, "8.查看当前所有图形对象个数");
+		outtextxy(185, 225, "9.测试区");
+		outtextxy(185, 250, "0.退出");
 		k = getch();
 		switch (k) {
 		case 49: {
 			cleardevice(); //清空之前输出的菜单信息，便于接下来的绘图
 			int cmenu1{ 0 };
-			for (; cmenu1 != 53; )
+			for (; cmenu1 != 54; )
 			{
 				setcolor(LIGHTGRAY);
 				outtextxy(170, 0, "1.创建一个圆对象");
 				outtextxy(170, 25, "2.查看当前已创建圆对象的参数");
 				outtextxy(170, 50, "3.绘制存储的圆对象");
 				outtextxy(170, 75, "4.删除某个圆对象");
-				outtextxy(170, 100, "5.返回主菜单");
+				outtextxy(170, 100, "5.图形间运算菜单");
+				outtextxy(170, 125, "6.返回主菜单");
 				cmenu1 = getch();
 				switch (cmenu1) {
 				case 49: {
@@ -78,7 +80,8 @@ int main()
 					int j = 0;
 					char temp[300] = { "" };
 					for (auto i : cStore) {
-						sprintf_s(temp, "编号：%d  半径：%d   坐标：(%d,%d)  边框颜色：%s   是否填充：%d   填充颜色：%s   画板大小：%s", j, (*i).getRadius(), (*i).getx(), (*i).gety(), (*i).getcolor()->getString().c_str(), (*i).isfilled(), (*i).getbgcolor()->getString().c_str(), (*i).getsize().c_str());
+						//sprintf_s(temp, "编号：%d  半径：%d   坐标：(%d,%d) 边框颜色：%s ", j, (*i).getRadius(), (*i).getx(), (*i).gety(), (*i).getcolor()->getString());
+						sprintf_s(temp, "编号：%d  半径：%d   坐标：(%d,%d)  边框颜色：%s   是否填充：%d   填充颜色：%s   画板大小：%s", j, (*i).getRadius(), (*i).getx(), (*i).gety(), i->getcolor()->getString().c_str(), (*i).isfilled(), i->getbgcolor()->getString().c_str(), (*i).getsize().c_str());
 						outtextxy(0, 25 * j, temp);
 						j++;
 					}
@@ -99,8 +102,8 @@ int main()
 					}
 					cStore[std::stoi(id)]->draw();
 					getch();
-					cleardevice();
 					initgraph(640, 480);
+					cleardevice();
 					break;
 				}
 				case 52: {
@@ -121,6 +124,82 @@ int main()
 					outtextxy(100, 50, temp);
 					getch();
 					cleardevice();
+					break;
+				}
+				case 53: {
+					cleardevice();
+					int cmenu_{ 0 };
+					for (; cmenu_ != 52;) {
+						setcolor(LIGHTGRAY);
+						outtextxy(170, 0, "1.比较两个圆的大小");
+						outtextxy(170, 25, "2.判断两个圆是否相等");
+						outtextxy(170, 50, "3.复制已有圆");
+						outtextxy(170, 75, "4.返回上级菜单");
+						cmenu_ = getch();
+						cleardevice();
+						switch (cmenu_) {
+						case 49: {
+							char id1[2];
+							char id2[2];
+							inputbox_getline("请输入第一个圆的编号：", "请输入第一个圆的编号：(回车确认)", id1, 2);
+							inputbox_getline("请输入第二个圆的编号：", "请输入第二个圆的编号：(回车确认)", id2, 2);
+							if (std::stoi(id1) > cStore.size() || std::stoi(id2) > cStore.size()) {
+								outtextxy(100, 0, "请输入正确的编号！");
+								getch();
+								cleardevice();
+								break;
+							}
+							if ((*(cStore[std::stoi(id1)])) > (*(cStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "第一个圆的大小大于第二个圆的大小");
+							}
+							else if ((*(cStore[std::stoi(id1)])) < (*(cStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "第一个圆的大小小于第二个圆的大小");
+							}
+							else {
+								outtextxy(170, 0, "两个圆大小相等");
+							}
+							getch();
+							cleardevice();
+							break;
+						}case 50: {
+							char id1[2];
+							char id2[2];
+							inputbox_getline("请输入第一个圆的编号：", "请输入第一个圆的编号：(回车确认)", id1, 2);
+							inputbox_getline("请输入第二个圆的编号：", "请输入第二个圆的编号：(回车确认)", id2, 2);
+							if (std::stoi(id1) > cStore.size() || std::stoi(id2) > cStore.size()) {
+								outtextxy(100, 0, "请输入正确的编号！");
+								getch();
+								cleardevice();
+								break;
+							}
+							if ((*(cStore[std::stoi(id1)])) == (*(cStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "两个圆的大小相等");
+							}
+							else if ((*(cStore[std::stoi(id1)])) != (*(cStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "两圆大小不相等");
+							}
+							getch();
+							cleardevice();
+							break;
+						}case 51: {
+							char id[2];
+							inputbox_getline("请输入需要复制的圆的编号：", "请输入需要复制的圆的编号：(回车确认)", id, 2);
+							if (std::stoi(id) > cStore.size()) {
+								outtextxy(100, 0, "请输入正确的编号！");
+								getch();
+								cleardevice();
+								break;
+							}
+							cStore.push_back(new Circle());
+							*(cStore.back()) = *(cStore[std::stoi(id)]);
+							outtextxy(170, 0, "复制成功！请到上级菜单查看！");
+							getch();
+							cleardevice();
+							break;
+						}
+						}
+					}
+					break;
 				}
 				}
 			}
@@ -187,8 +266,8 @@ int main()
 					}
 					rStore[std::stoi(id)]->draw();
 					getch();
-					cleardevice();
 					initgraph(640, 480);
+					cleardevice();
 					break;
 				}
 				case 52: {
@@ -277,8 +356,8 @@ int main()
 					}
 					tStore[std::stoi(id)]->draw();
 					getch();
-					cleardevice();
 					initgraph(640, 480);
+					cleardevice();
 					break;
 				}
 				case 52: {
@@ -460,8 +539,8 @@ int main()
 					}
 					pStore[std::stoi(id)]->draw();
 					getch();
-					cleardevice();
 					initgraph(640, 480);
+					cleardevice();
 					break;
 				}
 				case 52: {
@@ -490,8 +569,8 @@ int main()
 
 		case 54: {
 			cleardevice();
-			outtextxy(100, 0, "开始将数据保存成文件......");
-			outtextxy(75, 25, "支持圆、三角形、矩形、线段对象参数的导出");
+			outtextxy(175, 0, "开始将数据保存成文件......");
+			outtextxy(125, 25, "支持圆、三角形、矩形、线段对象参数的导出");
 			int num = 0;
 			for (auto i : cStore) {
 				(*i).writefile();
@@ -511,7 +590,7 @@ int main()
 			}
 			char notice[100];
 			sprintf_s(notice, "已导出%d个对象！按下任意键返回主菜单！", num);
-			outtextxy(100, 50, notice);
+			outtextxy(150, 50, notice);
 
 			getch();
 			cleardevice();
@@ -519,7 +598,7 @@ int main()
 		}
 		case 55: {
 			cleardevice();
-			outtextxy(100, 25, "现在开始从文件读入数据......");
+			outtextxy(150, 0, "现在开始从文件读入数据......");
 			std::ifstream in;
 			in.open("figure.txt");
 			int temp;
@@ -541,13 +620,13 @@ int main()
 						filled = "Y";
 						in >> bgcolor;
 						if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
-							inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色 在输入框中回车退出", temp_, 1);
+							inputbox_getline("发生错误！", "读取一个圆形的填充颜色时发生错误！使用默认颜色:红色 在输入框中回车退出", temp_, 1);
 							bgcolor = "R";
 						}
 					}
 					in.get();//进入下一行
 					if (color_ != "R" && color_ != "G" && color_ != "B") {//判断图形颜色数据是否合法
-						inputbox_getline("发生错误！", "读取一个对象的边框颜色时发生错误！使用默认颜色:红色 在输入框中回车退出", temp_, 1);//使用输入框的形式提醒用户
+						inputbox_getline("发生错误！", "读取一个圆形的边框颜色时发生错误！使用默认颜色:红色 在输入框中回车退出", temp_, 1);//使用输入框的形式提醒用户
 						color_ = "R";//使用默认颜色：红色
 					}
 					in >> size_;//读取画板大小信息
@@ -573,13 +652,13 @@ int main()
 						filled = "Y";
 						in >> bgcolor;
 						if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
-							inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色 在输入框中回车退出", temp_, 1);
+							inputbox_getline("发生错误！", "读取一个三角形的填充颜色时发生错误！使用默认颜色:红色 在输入框中回车退出", temp_, 1);
 							bgcolor = { "R" };
 						}
 					}
 					in.get();
 					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色 在输入框中回车退出", temp_, 1);
+						inputbox_getline("发生错误！", "读取一个三角形的边框颜色时发生错误！使用默认颜色：红色 在输入框中回车退出", temp_, 1);
 						color_ = { "R" };
 					}
 					in >> size_;
@@ -608,13 +687,13 @@ int main()
 						filled = "Y";
 						in >> bgcolor;
 						if (bgcolor != "R" && bgcolor != "G" && bgcolor != "B") {
-							inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色:红色 在输入框中回车退出", temp_, 1);
+							inputbox_getline("发生错误！", "读取一个矩形的填充颜色时发生错误！使用默认颜色:红色 在输入框中回车退出", temp_, 1);
 							bgcolor = { "R" };
 						}
 					}
 					in.get();
 					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色 在输入框中回车退出", temp_, 1);
+						inputbox_getline("发生错误！", "读取一个矩形的边框颜色时发生错误！使用默认颜色：红色 在输入框中回车退出", temp_, 1);
 						color_ = { "R" };
 					}
 					in >> size_;
@@ -638,7 +717,7 @@ int main()
 					in >> color_;
 					in.get();
 					if (color_ != "R" && color_ != "G" && color_ != "B") {
-						inputbox_getline("发生错误！", "读取一个对象的颜色时发生错误！使用默认颜色：红色 在输入框中回车退出", temp_, 1);
+						inputbox_getline("发生错误！", "读取一个线段的颜色时发生错误！使用默认颜色：红色 在输入框中回车退出", temp_, 1);
 						color_ = { "R" };
 					}
 					in >> size_;
@@ -652,7 +731,7 @@ int main()
 			}
 			char notice[100];
 			sprintf_s(notice, "已导入%d个对象！按下任意键返回主菜单！", num);
-			outtextxy(100, 50, notice);
+			outtextxy(125, 25, notice);
 			getch();
 			cleardevice();
 			in.close();
@@ -692,7 +771,7 @@ int main()
 
 		case 57: {
 			cleardevice();
-			char size[15], col[3];
+			/*char size[15], col[3];
 			int x, y;
 			inputbox_getline("请输入需要创建的画板大小：", "请输入需要创建的画板大小：(例：(640，480))：(回车确认)", size, 15);
 			controller screen1(size);
@@ -702,9 +781,144 @@ int main()
 			for (; !kbmsg(); delay_fps(300)) {
 				mousepos(&x, &y);//获取当前鼠标位置
 				putpixel(x, y, c.getcolor());//在鼠标当前位置打点
+			}*/
+			int menu2{ 0 };
+			char temp[50];
+			Color c{ "(255,255,255)" };
+			for (; menu2 != 48;) {
+				cleardevice();
+				setbkcolor(c.getcolor());
+				setcolor(LIGHTGRAY);
+				outtextxy(185, 0, "调色面板");
+				outtextxy(185, 25, "1.增强RGB亮度(++)");
+				outtextxy(185, 50, "2.减弱RGB亮度(--)");
+				outtextxy(185, 75, "3.增强红色亮度");
+				outtextxy(185, 100, "4.减弱红色亮度");
+				outtextxy(185, 125, "5.增强绿色亮度");
+				outtextxy(185, 150, "6.减弱绿色亮度");
+				outtextxy(185, 175, "7.增强蓝色亮度");
+				outtextxy(185, 200, "8.减弱蓝色亮度");
+				outtextxy(185, 225, "9.自定义颜色菜单");
+				outtextxy(185, 250, "0.退出");
+				sprintf_s(temp, "当前RGB三原色组合强度为：(%d,%d,%d)", c[0], c[1], c[2]);
+				outtextxy(185, 275, temp);
+				menu2 = getch();
+				switch (menu2)
+				{
+				case 49: {
+					++c;
+					break;
+				}
+				case 50: {
+					--c;
+					break;
+				}case 51: {
+					(*(c.setR()))++;
+					c.judge();
+					*(c.getAOfcolor()) = EGERGB(c[0], c[1], c[2]);
+					break;
+				}case 52: {
+					(*(c.setR()))--;
+					c.judge();
+					*(c.getAOfcolor()) = EGERGB(c[0], c[1], c[2]);
+					break;
+				}case 53: {
+					(*(c.setG()))++;
+					c.judge();
+					*(c.getAOfcolor()) = EGERGB(c[0], c[1], c[2]);
+					break;
+				}case 54: {
+					(*(c.setG()))--;
+					c.judge();
+					*(c.getAOfcolor()) = EGERGB(c[0], c[1], c[2]);
+					break;
+				}case 55: {
+					(*(c.setB()))++;;
+					c.judge();
+					*(c.getAOfcolor()) = EGERGB(c[0], c[1], c[2]);
+					break;
+				}case 56: {
+					(*(c.setB()))--;;
+					c.judge();
+					*(c.getAOfcolor()) = EGERGB(c[0], c[1], c[2]);
+					break;
+				}
+				case 57: {
+					int menu3{ 0 };
+					cleardevice();
+					setbkcolor(BLACK);
+					setcolor(LIGHTGRAY);
+					for (; menu3 != 53;) {
+						cleardevice();
+						outtextxy(185, 0, "1.新建自定义颜色");
+						outtextxy(185, 25, "2.查看自定义颜色列表");
+						outtextxy(185, 50, "3.判断两个颜色是否相等");
+						outtextxy(185, 75, "4.删除所有自定义颜色");
+						outtextxy(185, 75, "5.返回上一级菜单");
+						menu3 = getch();
+						switch (menu3)
+						{
+						case 49: {
+							cleardevice();
+							char r[3], g[3], b[3], allColor[30];
+							inputbox_getline("请输入红色亮度：", "请输入红色亮度：(回车确认)", r, 3);
+							inputbox_getline("请输入绿色亮度：", "请输入绿色亮度：(回车确认)", g, 3);
+							inputbox_getline("请输入蓝色亮度：", "请输入蓝色亮度：(回车确认)", b, 3);
+							sprintf_s(allColor, "(%d,%d,%d)", std::stoi(r), std::stoi(g), std::stoi(b));
+							CoStore.push_back(new Color{ string(allColor) });
+							outtextxy(170, 0, "创建成功！");
+							getch();
+							cleardevice();
+							break;
+						}
+						case 50: {
+							cleardevice();
+							int j{ 0 };
+							char temp[30];
+							for (auto i : CoStore) {
+								sprintf_s(temp, "编号：%d  R：%d   G：%d  B：%d", j, (*i)[0], (*i)[1], (*i)[2]);
+								outtextxy(0, 25 * j, temp);
+								j++;
+							}
+							getch();
+							break;
+						}
+						case 51: {
+							cleardevice();
+							char id1[2], id2[2];
+							inputbox_getline("请输入第一个颜色编号：", "请输入第一个颜色编号：(回车确认)", id1, 2);
+							inputbox_getline("请输入第二个颜色编号：", "请输入第二个颜色编号：(回车确认)", id2, 2);
+							if ((*CoStore[std::stoi(id1)]) == (*CoStore[std::stoi(id2)])) {
+								outtextxy(170, 0, "两个颜色相等");
+							}
+							else if ((*CoStore[std::stoi(id1)]) != (*CoStore[std::stoi(id2)])) {
+								outtextxy(170, 0, "两个颜色不相等");
+							}
+							getch();
+							cleardevice();
+							break;
+						}
+						case 52: {
+							cleardevice();
+							for (auto i : CoStore) {
+								delete i;
+								i = nullptr;
+							}
+							CoStore.clear();
+							outtextxy(170, 0, "清除完成！");
+							getch();
+							cleardevice();
+							break;
+						}
+						}
+					}
+				}
+				}
 			}
+			getch();
 			cleardevice();
 			initgraph(640, 480);
+			setbkcolor(BLACK);
 			break;
 		}
 

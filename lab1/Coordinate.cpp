@@ -1,4 +1,5 @@
 #include "Coordinate.h"
+#include <exception>
 
 point::point() :point("(300,300)") {}
 
@@ -11,14 +12,19 @@ point::point(std::string s_)//½«×Ö·û´®ÐÎÊ½µÄ×ø±ê×ª»»³ÉÁ½¸öintÀàÐÍ²¢´æ´¢ÔÚ³ÉÔ±±äÁ
 void point::convert(std::string s_)
 {
 	int n = s_.find_first_of(",");
-	this -> x = std::stoi(s_.substr(1, n - 1));
+	this->x = std::stoi(s_.substr(1, n - 1));
 	int n2 = s_.find_last_of(")");
-	this -> y = std::stoi(s_.substr(n + 1, n2 - n - 1));
+	this->y = std::stoi(s_.substr(n + 1, n2 - n - 1));
 }
 
 int point::getx()//getter
 {
 	return x;
+}
+
+int point::gety()//getter
+{
+	return y;
 }
 
 void point::setpoint(std::string s_)//setter
@@ -31,7 +37,29 @@ std::string point::getpS()
 	return pS;
 }
 
-int point::gety()//getter
+point point::operator+(const point p_)
 {
-	return y;
+	char temp[20];
+	sprintf_s(temp, "(%d,%d)", this->x + p_.x, this->y + p_.y);
+	return point(temp);
+}
+
+bool point::operator==(const point p_)
+{
+	return (((this->x) == p_.x) && ((this->y) == p_.y));
+}
+
+bool point::operator!=(const point p_)
+{
+	return !(((this->x) == p_.x) && ((this->y) == p_.y));
+}
+
+int& point::operator[](const int index)
+{
+	if (index == 0)
+		return x;
+	else if (index == 1)
+		return y;
+	else
+		throw std::exception{ "out of range!" };
 }

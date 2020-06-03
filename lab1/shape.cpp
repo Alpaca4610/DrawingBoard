@@ -18,6 +18,13 @@ void shape::convertBool(string filled_)//将字符串转换为bool类型的变量
 	}
 }
 
+shape::shape()
+{
+	color = { new Color{ "NULL" } };
+	fcolor = { new Color{ "NULL" } };
+	numOfObjects++;
+}
+
 shape::shape(string color_, string filled_, string size_, string flag = "D")//将字符串转换成color_t类型的变量
 {
 	size = size_;
@@ -69,6 +76,11 @@ string* shape::getAOfsize()
 	return &size;
 }
 
+bool* shape::getisfilled()
+{
+	return &filled;
+}
+
 int shape::getnumberObjects()
 {
 	return numOfObjects;
@@ -86,16 +98,20 @@ shape::~shape()
 	numOfObjects--;
 }
 
-Circle::Circle(Circle& c)//拷贝构造函数
+/*Circle::Circle(Circle& c)//拷贝构造函数
 {
 	p = c.p;
 	radius = c.radius;
 	*(this->getcolor()) = *(c.getcolor());//深拷贝
 	*(this->getbgcolor()) = *(c.getbgcolor());//深拷贝
 	*(this->getAOfsize()) = c.getsize();
+}*/
+
+Circle::Circle() :shape()
+{
 }
 
-Circle::Circle(point p_, int r_, string s_, string filled_, string size_, string bgc0lor) :shape{ s_, filled_ ,size_ ,bgc0lor }//利用接收的字符串构造类
+Circle::Circle(point p_, int r_, string s_, string filled_, string size_, string bgc0lor) : shape{ s_, filled_ ,size_ ,bgc0lor }//利用接收的字符串构造类
 {
 	p = p_;
 	radius = r_;
@@ -141,6 +157,49 @@ void Circle::writefile()
 	out << std::endl << this->getsize();
 	out << std::endl;
 	out.close();
+}
+
+bool Circle::operator<(const Circle& c_)
+{
+	return ((this->radius) < c_.radius);
+}
+
+bool Circle::operator>(const Circle& c_)
+{
+	return ((this->radius) > c_.radius);
+}
+
+bool Circle::operator<=(const Circle& c_)
+{
+	return ((this->radius) <= c_.radius);
+}
+
+bool Circle::operator>=(const Circle& c_)
+{
+	return ((this->radius) >= c_.radius);
+}
+
+bool Circle::operator==(const Circle& c_)
+{
+	return (((this->p) == c_.p) && ((this->radius) == c_.radius));
+}
+
+bool Circle::operator!=(const Circle& c_)
+{
+	return !(((this->p) == c_.p) && ((this->radius) == c_.radius));
+}
+
+Circle& Circle::operator=(Circle& c_)
+{
+	this->radius = c_.radius;
+	this->p = c_.p;
+	*((*(this->getcolor())).getAOfcolor()) = { (*(c_.getcolor())).getcolor() };
+	*(this->getcolor()->getAOfString()) = { c_.getcolor()->getString() };
+	*((*(this->getbgcolor())).getAOfcolor()) = { (*(c_.getbgcolor())).getcolor() };
+	*(this->getbgcolor()->getAOfString()) = { c_.getbgcolor()->getString() };
+	*(this->getAOfsize()) = { (c_.getsize()) };
+	*(this->getisfilled()) = { (c_.isfilled()) };
+	return *(this);
 }
 
 Circle::~Circle()
