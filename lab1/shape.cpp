@@ -206,16 +206,20 @@ Circle::~Circle()
 {
 }
 
-RectangleC::RectangleC(RectangleC& r)
+/*RectangleC::RectangleC(RectangleC& r)
 {
 	p1 = r.p1;
 	p2 = r.p2;
 	*(this->getcolor()) = *(r.getcolor());//Éî¿½±´
 	*(this->getbgcolor()) = *(r.getbgcolor());//Éî¿½±´
 	*(this->getAOfsize()) = r.getsize();
+}*/
+
+RectangleC::RectangleC() :shape()
+{
 }
 
-RectangleC::RectangleC(point p1_, point p2_, string s_, string filled_, string size_, string bgc0lor) :shape{ s_,filled_,size_ ,bgc0lor }
+RectangleC::RectangleC(point p1_, point p2_, string s_, string filled_, string size_, string bgc0lor) : shape{ s_,filled_,size_ ,bgc0lor }
 {
 	p1 = p1_;
 	p2 = p2_;
@@ -258,11 +262,69 @@ void RectangleC::writefile()
 	out.close();
 }
 
+int RectangleC::getArea()
+{
+	return ((abs(p1.getx() - p2.getx())) * (abs(p1.gety() - p2.gety())));
+}
+
+bool RectangleC::operator<(RectangleC& r_)
+{
+	return (this->getArea() < r_.getArea());
+}
+
+bool RectangleC::operator>(RectangleC& r_)
+{
+	return (this->getArea() > r_.getArea());
+}
+
+bool RectangleC::operator<=(RectangleC& r_)
+{
+	return (this->getArea() <= r_.getArea());
+}
+
+bool RectangleC::operator>=(RectangleC& r_)
+{
+	return (this->getArea() >= r_.getArea());
+}
+
+bool RectangleC::operator==(RectangleC& r_)
+{
+	return (this->getArea() == r_.getArea());
+}
+
+bool RectangleC::operator!=(RectangleC& r_)
+{
+	return (this->getArea() != r_.getArea());
+}
+
+point RectangleC::operator[](const int& index)
+{
+	if (index == 0)
+		return p1;
+	else if (index == 1)
+		return p2;
+	else
+		throw std::exception{ "out of range!" };
+}
+
+RectangleC& RectangleC::operator=(RectangleC& r_)
+{
+	this->p1 = r_.p1;
+	this->p2 = r_.p2;
+	*((*(this->getcolor())).getAOfcolor()) = { (*(r_.getcolor())).getcolor() };
+	*(this->getcolor()->getAOfString()) = { r_.getcolor()->getString() };
+	*((*(this->getbgcolor())).getAOfcolor()) = { (*(r_.getbgcolor())).getcolor() };
+	*(this->getbgcolor()->getAOfString()) = { r_.getbgcolor()->getString() };
+	*(this->getAOfsize()) = { (r_.getsize()) };
+	*(this->getisfilled()) = { (r_.isfilled()) };
+	return *(this);
+}
+
 RectangleC::~RectangleC()
 {
 }
 
-triangle::triangle(triangle& t1)
+/*triangle::triangle(triangle& t1)
 {
 	p1 = t1.p1;
 	p2 = t1.p2;
@@ -270,9 +332,13 @@ triangle::triangle(triangle& t1)
 	*(this->getcolor()) = *(this->getcolor());
 	*(this->getbgcolor()) = *(this->getbgcolor());
 	*(this->getAOfsize()) = t1.getsize();
+}*/
+
+triangle::triangle() :shape()
+{
 }
 
-triangle::triangle(point p1_, point p2_, point p3_, string c_, string filled_, string size_, string bgc0lor) :shape(c_, filled_, size_, bgc0lor)
+triangle::triangle(point p1_, point p2_, point p3_, string c_, string filled_, string size_, string bgc0lor) : shape(c_, filled_, size_, bgc0lor)
 {
 	p1 = p1_;
 	p2 = p2_;
@@ -321,16 +387,88 @@ void triangle::writefile()
 	out.close();
 }
 
+double triangle::getArea()
+{
+	double e1, e2, e3, p;
+	e1 = pow((pow((p1.getx() - p2.getx()), 2.0) + pow((p1.gety() - p2.gety()), 2.0)), 0.5);
+	e2 = pow((pow((p1.getx() - p3.getx()), 2.0) + pow((p1.gety() - p3.gety()), 2.0)), 0.5);
+	e3 = pow((pow((p3.getx() - p2.getx()), 2.0) + pow((p3.gety() - p2.gety()), 2.0)), 0.5);
+	p = 0.5 * (e1 + e2 + e3);
+	return (pow((p * (p - e1) * (p - e2) * (p - e3)), 0.5));
+}
+
+bool triangle::operator<(triangle& t)
+{
+	return (this->getArea() < t.getArea());
+}
+
+bool triangle::operator>(triangle& t)
+{
+	return (this->getArea() > t.getArea());
+}
+
+bool triangle::operator<=(triangle& t)
+{
+	return (this->getArea() <= t.getArea());
+}
+
+bool triangle::operator>=(triangle& t)
+{
+	return (this->getArea() >= t.getArea());
+}
+
+bool triangle::operator==(triangle& t)
+{
+	return (this->getArea() == t.getArea());
+}
+
+bool triangle::operator!=(triangle& t)
+{
+	return (this->getArea() != t.getArea());
+}
+
+point triangle::operator[](const int& index)
+{
+	if (index == 0)
+		return p1;
+	else if (index == 1)
+		return p2;
+	else if (index == 3)
+		return p3;
+	else
+		throw std::exception{ "out of range!" };
+}
+
+triangle& triangle::operator=(triangle& t)
+{
+	this->p1 = t.p1;
+	this->p2 = t.p2;
+	this->p3 = t.p3;
+	*((*(this->getcolor())).getAOfcolor()) = { (*(t.getcolor())).getcolor() };
+	*(this->getcolor()->getAOfString()) = { t.getcolor()->getString() };
+	*((*(this->getbgcolor())).getAOfcolor()) = { (*(t.getbgcolor())).getcolor() };
+	*(this->getbgcolor()->getAOfString()) = { t.getbgcolor()->getString() };
+	*(this->getAOfsize()) = { (t.getsize()) };
+	*(this->getisfilled()) = { (t.isfilled()) };
+	return *(this);
+}
+
 triangle::~triangle()
 {
 }
 
-Line::Line(Line& l)
+/*Line::Line(Line& l)
 {
 	p1 = l.p1;
 	p2 = l.p2;
 	*color = *(l.color);//Éî¿½±´
 	size = l.size;
+	(*(shape::getAOnumberObjects()))++;
+}*/
+
+Line::Line()
+{
+	color = { new Color{ "NULL" } };
 	(*(shape::getAOnumberObjects()))++;
 }
 
@@ -360,6 +498,66 @@ point Line::getp2()
 string Line::getsize()
 {
 	return size;
+}
+
+string* Line::getAOfsize()
+{
+	return &size;
+}
+
+double Line::getLength()
+{
+	return pow((pow(p1.getx() - p2.getx(), 2) + pow(p1.gety() - p2.gety(), 2)), 0.5);
+}
+
+bool Line::operator<(Line& l)
+{
+	return (this->getLength() < l.getLength());
+}
+
+bool Line::operator>(Line& l)
+{
+	return (this->getLength() < l.getLength());
+}
+
+bool Line::operator<=(Line& l)
+{
+	return (this->getLength() < l.getLength());
+}
+
+bool Line::operator>=(Line& l)
+{
+	return (this->getLength() < l.getLength());
+}
+
+bool Line::operator==(Line& l)
+{
+	return (this->getLength() < l.getLength());
+}
+
+bool Line::operator!=(Line& l)
+{
+	return (this->getLength() < l.getLength());
+}
+
+point Line::operator[](const int& index)
+{
+	if (index == 0)
+		return p1;
+	else if (index == 1)
+		return p2;
+	else
+		throw std::exception{ "out of range!" };
+}
+
+Line& Line::operator=(Line& l)
+{
+	this->p1 = l.p1;
+	this->p2 = l.p2;
+	*((*(this->getcolor())).getAOfcolor()) = { (*(l.getcolor())).getcolor() };
+	*(this->getcolor()->getAOfString()) = { l.getcolor()->getString() };
+	*(this->getAOfsize()) = { (l.getsize()) };
+	return *(this);
 }
 
 void Line::draw()

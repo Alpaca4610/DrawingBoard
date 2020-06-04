@@ -22,12 +22,13 @@ int main()
 	std::vector<Line*> LStore;
 	std::vector<ploygon*> pStore;
 	std::vector<Color*> CoStore;
+	std::vector<point*> PoStore;
 
 	for (; k != key_esc; ) // key_esc是ege定义的按键常数
 	{
 		setcolor(LIGHTGRAY);
 		cleardevice();
-		outtextxy(125, 0, "欢迎使用Alpaca Drawing Board Ver4.3！");
+		outtextxy(125, 0, "欢迎使用Alpaca Drawing Board Ver5.1！");
 		outtextxy(185, 25, "1.圆形绘图菜单");
 		outtextxy(185, 50, "2.矩形绘图菜单");
 		outtextxy(185, 75, "3.三角形绘图菜单");
@@ -36,7 +37,7 @@ int main()
 		outtextxy(185, 150, "6.导出图形对象参数保存至文件");
 		outtextxy(185, 175, "7.从文件中导入图形对象参数");
 		outtextxy(185, 200, "8.查看当前所有图形对象个数");
-		outtextxy(185, 225, "9.测试区");
+		outtextxy(185, 225, "9.调色/坐标运算测试区");
 		outtextxy(185, 250, "0.退出");
 		k = getch();
 		switch (k) {
@@ -208,14 +209,15 @@ int main()
 		case 50: {
 			cleardevice(); //清空之前输出的菜单信息，便于接下来的绘图
 			int cmenu2{ 0 };
-			for (; cmenu2 != 53; )
+			for (; cmenu2 != 54; )
 			{
 				setcolor(LIGHTGRAY);
 				outtextxy(170, 0, "1.创建一个矩形对象");
 				outtextxy(170, 25, "2.查看当前已创建矩形对象的参数");
 				outtextxy(170, 50, "3.绘制存储的矩形对象");
 				outtextxy(170, 75, "4.删除某个矩形对象");
-				outtextxy(170, 100, "5.返回主菜单");
+				outtextxy(170, 100, "5.矩形运算菜单");
+				outtextxy(170, 125, "6.返回主菜单");
 				cmenu2 = getch();
 				switch (cmenu2) {
 				case 49: {
@@ -289,6 +291,81 @@ int main()
 					getch();
 					cleardevice();
 				}
+				case 53: {
+					cleardevice();
+					int cmenu_{ 0 };
+					for (; cmenu_ != 52;) {
+						setcolor(LIGHTGRAY);
+						outtextxy(170, 0, "1.比较两个矩形的大小");
+						outtextxy(170, 25, "2.判断两个矩形是否相等");
+						outtextxy(170, 50, "3.复制已有矩形");
+						outtextxy(170, 75, "4.返回上级菜单");
+						cmenu_ = getch();
+						cleardevice();
+						switch (cmenu_) {
+						case 49: {
+							char id1[2];
+							char id2[2];
+							inputbox_getline("请输入第一个矩形的编号：", "请输入第一个矩形的编号：(回车确认)", id1, 2);
+							inputbox_getline("请输入第二个矩形的编号：", "请输入第二个矩形的编号：(回车确认)", id2, 2);
+							if (std::stoi(id1) > rStore.size() || std::stoi(id2) > rStore.size()) {
+								outtextxy(100, 0, "请输入正确的编号！");
+								getch();
+								cleardevice();
+								break;
+							}
+							if ((*(rStore[std::stoi(id1)])) > (*(rStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "第一个矩形的大小大于第二个矩形的大小");
+							}
+							else if ((*(rStore[std::stoi(id1)])) < (*(rStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "第一个矩形的大小小于第二个矩形的大小");
+							}
+							else {
+								outtextxy(170, 0, "两个矩形大小相等");
+							}
+							getch();
+							cleardevice();
+							break;
+						}case 50: {
+							char id1[2];
+							char id2[2];
+							inputbox_getline("请输入第一个矩形的编号：", "请输入第一个矩形的编号：(回车确认)", id1, 2);
+							inputbox_getline("请输入第二个矩形的编号：", "请输入第二个矩形的编号：(回车确认)", id2, 2);
+							if (std::stoi(id1) > rStore.size() || std::stoi(id2) > rStore.size()) {
+								outtextxy(100, 0, "请输入正确的编号！");
+								getch();
+								cleardevice();
+								break;
+							}
+							if ((*(rStore[std::stoi(id1)])) == (*(rStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "两个矩形的大小相等");
+							}
+							else if ((*(rStore[std::stoi(id1)])) != (*(rStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "两矩形大小不相等");
+							}
+							getch();
+							cleardevice();
+							break;
+						}case 51: {
+							char id[2];
+							inputbox_getline("请输入需要复制的矩形的编号：", "请输入需要复制的矩形的编号：(回车确认)", id, 2);
+							if (std::stoi(id) > rStore.size()) {
+								outtextxy(100, 0, "请输入正确的编号！");
+								getch();
+								cleardevice();
+								break;
+							}
+							rStore.push_back(new RectangleC());
+							*(rStore.back()) = *(rStore[std::stoi(id)]);
+							outtextxy(170, 0, "复制成功！请到上级菜单查看！");
+							getch();
+							cleardevice();
+							break;
+						}
+						}
+					}
+					break;
+				}
 				}
 			}
 			cleardevice();//清屏
@@ -297,14 +374,15 @@ int main()
 		case 51: {
 			cleardevice();
 			int cmenu3{ 0 };
-			for (; cmenu3 != 53; )
+			for (; cmenu3 != 54; )
 			{
 				setcolor(LIGHTGRAY);
 				outtextxy(170, 0, "1.创建一个三角形对象");
 				outtextxy(170, 25, "2.查看当前已创建三角形对象的参数");
 				outtextxy(170, 50, "3.绘制存储的三角形对象");
 				outtextxy(170, 75, "4.删除某个三角形对象");
-				outtextxy(170, 100, "5.返回主菜单");
+				outtextxy(170, 100, "5.三角形运算菜单");
+				outtextxy(170, 125, "6.返回主菜单");
 				cmenu3 = getch();
 				switch (cmenu3) {
 				case 49: {
@@ -379,6 +457,81 @@ int main()
 					getch();
 					cleardevice();
 				}
+				case 53: {
+					cleardevice();
+					int cmenu_{ 0 };
+					for (; cmenu_ != 52;) {
+						setcolor(LIGHTGRAY);
+						outtextxy(170, 0, "1.比较两个三角形的大小");
+						outtextxy(170, 25, "2.判断两个三角形是否相等");
+						outtextxy(170, 50, "3.复制已有三角形");
+						outtextxy(170, 75, "4.返回上级菜单");
+						cmenu_ = getch();
+						cleardevice();
+						switch (cmenu_) {
+						case 49: {
+							char id1[2];
+							char id2[2];
+							inputbox_getline("请输入第一个三角形的编号：", "请输入第一个三角形的编号：(回车确认)", id1, 2);
+							inputbox_getline("请输入第二个三角形的编号：", "请输入第二个三角形的编号：(回车确认)", id2, 2);
+							if (std::stoi(id1) > tStore.size() || std::stoi(id2) > tStore.size()) {
+								outtextxy(100, 0, "请输入正确的编号！");
+								getch();
+								cleardevice();
+								break;
+							}
+							if ((*(tStore[std::stoi(id1)])) > (*(tStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "第一个三角形的大小大于第二个三角形的大小");
+							}
+							else if ((*(tStore[std::stoi(id1)])) < (*(tStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "第一个三角形的大小小于第二个三角形的大小");
+							}
+							else {
+								outtextxy(170, 0, "两个三角形大小相等");
+							}
+							getch();
+							cleardevice();
+							break;
+						}case 50: {
+							char id1[2];
+							char id2[2];
+							inputbox_getline("请输入第一个三角形的编号：", "请输入第一个三角形的编号：(回车确认)", id1, 2);
+							inputbox_getline("请输入第二个三角形的编号：", "请输入第二个三角形的编号：(回车确认)", id2, 2);
+							if (std::stoi(id1) > tStore.size() || std::stoi(id2) > tStore.size()) {
+								outtextxy(100, 0, "请输入正确的编号！");
+								getch();
+								cleardevice();
+								break;
+							}
+							if ((*(tStore[std::stoi(id1)])) == (*(tStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "两个三角形的大小相等");
+							}
+							else if ((*(tStore[std::stoi(id1)])) != (*(tStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "两三角形大小不相等");
+							}
+							getch();
+							cleardevice();
+							break;
+						}case 51: {
+							char id[2];
+							inputbox_getline("请输入需要复制的三角形的编号：", "请输入需要复制的三角形的编号：(回车确认)", id, 2);
+							if (std::stoi(id) > tStore.size()) {
+								outtextxy(100, 0, "请输入正确的编号！");
+								getch();
+								cleardevice();
+								break;
+							}
+							tStore.push_back(new triangle());
+							*(tStore.back()) = *(tStore[std::stoi(id)]);
+							outtextxy(170, 0, "复制成功！请到上级菜单查看！");
+							getch();
+							cleardevice();
+							break;
+						}
+						}
+					}
+					break;
+				}
 				}
 			}
 			break;
@@ -387,14 +540,15 @@ int main()
 		case 52: {
 			cleardevice();
 			int cmenu4{ 0 };
-			for (; cmenu4 != 53; )
+			for (; cmenu4 != 54; )
 			{
 				setcolor(LIGHTGRAY);
 				outtextxy(170, 0, "1.创建一个线段对象");
 				outtextxy(170, 25, "2.查看当前已创建线段对象的参数");
 				outtextxy(170, 50, "3.绘制存储的线段对象");
 				outtextxy(170, 75, "4.删除某个线段对象");
-				outtextxy(170, 100, "5.返回主菜单");
+				outtextxy(170, 100, "5.线段运算菜单");
+				outtextxy(170, 125, "6.返回主菜单");
 				cmenu4 = getch();
 				switch (cmenu4) {
 				case 49: {
@@ -467,6 +621,81 @@ int main()
 					outtextxy(100, 50, temp);
 					getch();
 					cleardevice();
+				}
+				case 53: {
+					cleardevice();
+					int cmenu_{ 0 };
+					for (; cmenu_ != 52;) {
+						setcolor(LIGHTGRAY);
+						outtextxy(170, 0, "1.比较两个线段的大小");
+						outtextxy(170, 25, "2.判断两个线段是否相等");
+						outtextxy(170, 50, "3.复制已有线段");
+						outtextxy(170, 75, "4.返回上级菜单");
+						cmenu_ = getch();
+						cleardevice();
+						switch (cmenu_) {
+						case 49: {
+							char id1[2];
+							char id2[2];
+							inputbox_getline("请输入第一个线段的编号：", "请输入第一个线段的编号：(回车确认)", id1, 2);
+							inputbox_getline("请输入第二个线段的编号：", "请输入第二个线段的编号：(回车确认)", id2, 2);
+							if (std::stoi(id1) > LStore.size() || std::stoi(id2) > LStore.size()) {
+								outtextxy(100, 0, "请输入正确的编号！");
+								getch();
+								cleardevice();
+								break;
+							}
+							if ((*(LStore[std::stoi(id1)])) > (*(LStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "第一个线段的大小大于第二个线段的大小");
+							}
+							else if ((*(LStore[std::stoi(id1)])) < (*(LStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "第一个线段的大小小于第二个线段的大小");
+							}
+							else {
+								outtextxy(170, 0, "两个线段大小相等");
+							}
+							getch();
+							cleardevice();
+							break;
+						}case 50: {
+							char id1[2];
+							char id2[2];
+							inputbox_getline("请输入第一个线段的编号：", "请输入第一个线段的编号：(回车确认)", id1, 2);
+							inputbox_getline("请输入第二个线段的编号：", "请输入第二个线段的编号：(回车确认)", id2, 2);
+							if (std::stoi(id1) > LStore.size() || std::stoi(id2) > LStore.size()) {
+								outtextxy(100, 0, "请输入正确的编号！");
+								getch();
+								cleardevice();
+								break;
+							}
+							if ((*(LStore[std::stoi(id1)])) == (*(LStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "两个线段的大小相等");
+							}
+							else if ((*(LStore[std::stoi(id1)])) != (*(LStore[std::stoi(id2)]))) {
+								outtextxy(170, 0, "两线段大小不相等");
+							}
+							getch();
+							cleardevice();
+							break;
+						}case 51: {
+							char id[2];
+							inputbox_getline("请输入需要复制的线段的编号：", "请输入需要复制的线段的编号：(回车确认)", id, 2);
+							if (std::stoi(id) > LStore.size()) {
+								outtextxy(100, 0, "请输入正确的编号！");
+								getch();
+								cleardevice();
+								break;
+							}
+							LStore.push_back(new Line());
+							*(LStore.back()) = *(LStore[std::stoi(id)]);
+							outtextxy(170, 0, "复制成功！请到上级菜单查看！");
+							getch();
+							cleardevice();
+							break;
+						}
+						}
+					}
+					break;
 				}
 				}
 			}
@@ -789,7 +1018,7 @@ int main()
 				cleardevice();
 				setbkcolor(c.getcolor());
 				setcolor(LIGHTGRAY);
-				outtextxy(185, 0, "调色面板");
+				outtextxy(200, 0, "调色面板");
 				outtextxy(185, 25, "1.增强RGB亮度(++)");
 				outtextxy(185, 50, "2.减弱RGB亮度(--)");
 				outtextxy(185, 75, "3.增强红色亮度");
@@ -798,7 +1027,7 @@ int main()
 				outtextxy(185, 150, "6.减弱绿色亮度");
 				outtextxy(185, 175, "7.增强蓝色亮度");
 				outtextxy(185, 200, "8.减弱蓝色亮度");
-				outtextxy(185, 225, "9.自定义颜色菜单");
+				outtextxy(185, 225, "9.自定义颜色/坐标运算菜单");
 				outtextxy(185, 250, "0.退出");
 				sprintf_s(temp, "当前RGB三原色组合强度为：(%d,%d,%d)", c[0], c[1], c[2]);
 				outtextxy(185, 275, temp);
@@ -848,13 +1077,17 @@ int main()
 					cleardevice();
 					setbkcolor(BLACK);
 					setcolor(LIGHTGRAY);
-					for (; menu3 != 53;) {
+					for (; menu3 != 57;) {
 						cleardevice();
 						outtextxy(185, 0, "1.新建自定义颜色");
 						outtextxy(185, 25, "2.查看自定义颜色列表");
 						outtextxy(185, 50, "3.判断两个颜色是否相等");
 						outtextxy(185, 75, "4.删除所有自定义颜色");
-						outtextxy(185, 75, "5.返回上一级菜单");
+						outtextxy(185, 100, "5.新建自定义坐标");
+						outtextxy(185, 125, "6.查看自定义坐标列表");
+						outtextxy(185, 150, "7.判断两个坐标是否相等");
+						outtextxy(185, 175, "8.删除所有自定义坐标");
+						outtextxy(185, 200, "9.返回上一级菜单");
 						menu3 = getch();
 						switch (menu3)
 						{
@@ -905,6 +1138,56 @@ int main()
 								i = nullptr;
 							}
 							CoStore.clear();
+							outtextxy(170, 0, "清除完成！");
+							getch();
+							cleardevice();
+							break;
+						}
+
+						case 53: {
+							cleardevice();
+							char p[30];
+							inputbox_getline("请输入坐标：", "请输入坐标：(回车确认)", p, 30);
+							PoStore.push_back(new point{ p });
+							outtextxy(170, 0, "创建成功！");
+							getch();
+							cleardevice();
+							break;
+						}
+						case 54: {
+							cleardevice();
+							int j{ 0 };
+							char temp[30];
+							for (auto i : PoStore) {
+								sprintf_s(temp, "编号：%d  x：%d   y：%d ", j, (*i)[0], (*i)[1]);
+								outtextxy(0, 25 * j, temp);
+								j++;
+							}
+							getch();
+							break;
+						}
+						case 55: {
+							cleardevice();
+							char id1[2], id2[2];
+							inputbox_getline("请输入第一个坐标编号：", "请输入第一个坐标编号：(回车确认)", id1, 2);
+							inputbox_getline("请输入第二个坐标编号：", "请输入第二个坐标编号：(回车确认)", id2, 2);
+							if ((*PoStore[std::stoi(id1)]) == (*PoStore[std::stoi(id2)])) {
+								outtextxy(170, 0, "两个坐标相等");
+							}
+							else if ((*PoStore[std::stoi(id1)]) != (*PoStore[std::stoi(id2)])) {
+								outtextxy(170, 0, "两个坐标不相等");
+							}
+							getch();
+							cleardevice();
+							break;
+						}
+						case 56: {
+							cleardevice();
+							for (auto i : PoStore) {
+								delete i;
+								i = nullptr;
+							}
+							PoStore.clear();
 							outtextxy(170, 0, "清除完成！");
 							getch();
 							cleardevice();
