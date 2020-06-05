@@ -17,12 +17,12 @@ void point::convert(std::string s_)
 	this->y = std::stoi(s_.substr(n + 1, n2 - n - 1));
 }
 
-int point::getx()//getter
+int point::getx() const//getter
 {
 	return x;
 }
 
-int point::gety()//getter
+int point::gety() const//getter
 {
 	return y;
 }
@@ -37,10 +37,10 @@ std::string point::getpS()
 	return pS;
 }
 
-point point::operator+(const point p_)
+point point::operator+(const point& p_)
 {
-	char temp[20];
-	sprintf_s(temp, "(%d,%d)", this->x + p_.x, this->y + p_.y);
+	char temp[30];
+	sprintf_s(temp, "(%f,%f)", 0.5 * (this->x + 1.0 * p_.x), 0.5 * (this->y + 1.0 * p_.y));
 	return point(temp);
 }
 

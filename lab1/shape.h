@@ -38,9 +38,9 @@ public:
 	//Circle(Circle&);
 	Circle();
 	Circle(point, int, string, string, string, string bgc0lor = "D");
-	int getx();
-	int gety();
-	int getRadius();
+	int getx() const;
+	int gety() const;
+	int getRadius() const;
 	virtual void draw() override;
 	virtual void writefile() override;
 	bool operator<(const Circle&);
@@ -60,8 +60,8 @@ public:
 	//RectangleC(RectangleC&);
 	RectangleC();
 	RectangleC(point, point, string, string, string, string bgc0lor = "D");
-	point getp1();
-	point getp2();
+	point getp1() const;
+	point getp2() const;
 	virtual void draw() override;
 	virtual void writefile() override;
 	int getArea();

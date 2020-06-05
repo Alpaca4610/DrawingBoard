@@ -117,17 +117,17 @@ Circle::Circle(point p_, int r_, string s_, string filled_, string size_, string
 	radius = r_;
 }
 
-int Circle::getx()//getter
+int Circle::getx() const//getter
 {
 	return p.getx();
 }
 
-int Circle::gety()//getter
+int Circle::gety() const//getter
 {
 	return p.gety();
 }
 
-int Circle::getRadius()
+int Circle::getRadius() const
 {
 	return radius;
 }
@@ -225,12 +225,12 @@ RectangleC::RectangleC(point p1_, point p2_, string s_, string filled_, string s
 	p2 = p2_;
 }
 
-point RectangleC::getp1()//getter
+point RectangleC::getp1() const//getter
 {
 	return p1;
 }
 
-point RectangleC::getp2()//getter
+point RectangleC::getp2() const//getter
 {
 	return p2;
 }

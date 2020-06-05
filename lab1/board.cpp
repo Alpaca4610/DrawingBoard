@@ -28,7 +28,7 @@ int main()
 	{
 		setcolor(LIGHTGRAY);
 		cleardevice();
-		outtextxy(125, 0, "欢迎使用Alpaca Drawing Board Ver5.1！");
+		outtextxy(125, 0, "欢迎使用Alpaca Drawing Board Ver5.2！");
 		outtextxy(185, 25, "1.圆形绘图菜单");
 		outtextxy(185, 50, "2.矩形绘图菜单");
 		outtextxy(185, 75, "3.三角形绘图菜单");
@@ -1077,7 +1077,7 @@ int main()
 					cleardevice();
 					setbkcolor(BLACK);
 					setcolor(LIGHTGRAY);
-					for (; menu3 != 57;) {
+					for (; menu3 != 48;) {
 						cleardevice();
 						outtextxy(185, 0, "1.新建自定义颜色");
 						outtextxy(185, 25, "2.查看自定义颜色列表");
@@ -1086,17 +1086,18 @@ int main()
 						outtextxy(185, 100, "5.新建自定义坐标");
 						outtextxy(185, 125, "6.查看自定义坐标列表");
 						outtextxy(185, 150, "7.判断两个坐标是否相等");
-						outtextxy(185, 175, "8.删除所有自定义坐标");
-						outtextxy(185, 200, "9.返回上一级菜单");
+						outtextxy(185, 175, "8.两个坐标取中点运算");
+						outtextxy(185, 200, "9.删除所有自定义坐标");
+						outtextxy(185, 225, "0.返回上一级菜单");
 						menu3 = getch();
 						switch (menu3)
 						{
 						case 49: {
 							cleardevice();
-							char r[3], g[3], b[3], allColor[30];
-							inputbox_getline("请输入红色亮度：", "请输入红色亮度：(回车确认)", r, 3);
-							inputbox_getline("请输入绿色亮度：", "请输入绿色亮度：(回车确认)", g, 3);
-							inputbox_getline("请输入蓝色亮度：", "请输入蓝色亮度：(回车确认)", b, 3);
+							char r[5], g[5], b[5], allColor[40];
+							inputbox_getline("请输入红色亮度：", "请输入红色亮度：(回车确认)", r, 5);
+							inputbox_getline("请输入绿色亮度：", "请输入绿色亮度：(回车确认)", g, 5);
+							inputbox_getline("请输入蓝色亮度：", "请输入蓝色亮度：(回车确认)", b, 5);
 							sprintf_s(allColor, "(%d,%d,%d)", std::stoi(r), std::stoi(g), std::stoi(b));
 							CoStore.push_back(new Color{ string(allColor) });
 							outtextxy(170, 0, "创建成功！");
@@ -1107,7 +1108,7 @@ int main()
 						case 50: {
 							cleardevice();
 							int j{ 0 };
-							char temp[30];
+							char temp[50];
 							for (auto i : CoStore) {
 								sprintf_s(temp, "编号：%d  R：%d   G：%d  B：%d", j, (*i)[0], (*i)[1], (*i)[2]);
 								outtextxy(0, 25 * j, temp);
@@ -1181,7 +1182,7 @@ int main()
 							cleardevice();
 							break;
 						}
-						case 56: {
+						case 57: {
 							cleardevice();
 							for (auto i : PoStore) {
 								delete i;
@@ -1189,6 +1190,17 @@ int main()
 							}
 							PoStore.clear();
 							outtextxy(170, 0, "清除完成！");
+							getch();
+							cleardevice();
+							break;
+						}
+						case 56: {
+							cleardevice();
+							char id1[2], id2[2], temp[100];
+							inputbox_getline("请输入第一个坐标编号：", "请输入第一个坐标编号：(回车确认)", id1, 2);
+							inputbox_getline("请输入第二个坐标编号：", "请输入第二个坐标编号：(回车确认)", id2, 2);
+							sprintf_s(temp, "两坐标组成的线段的中点是：(%d,%d)", (*(PoStore[std::stoi(id1)]) + *(PoStore[std::stoi(id2)]))[0], (*(PoStore[std::stoi(id1)]) + *(PoStore[std::stoi(id2)]))[1]);
+							outtextxy(170, 0, temp);
 							getch();
 							cleardevice();
 							break;
